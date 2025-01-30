@@ -1,0 +1,11 @@
+abi_version=1.8.0
+builtins_platform=WASM
+compiler_version=2.0.21
+depends=kotlin
+ir_signature_versions=1,2
+jsOutputName=Engine-KotlinGen-DSL-wasm-js
+metadata_version=1.4.1
+serializedIrFileFingerprints=3rncvnxonxfhh.2qdi8fb3b0xqq 22vl5ea5m97et.3l4hx3ynsorv2 5csa5lig902r.1lil292zyyji4 1nx4g8p3f75sr.29ivzsvikym84 2mxoxwf6t9qsg.11nji2nh3ocif od52en3lvn7k.2wwdmrg9kjvn4 1iv7s5c7u8zjw.1k03b92732boh 194nf3fxo5kyh.2fc8pskr0u8ls 1vymilu2slbs0.qnj2a9qapvyk 1nc77w7nb7yyo.2euwwc173sp0q 3cny74ry6t4ik.3vrgx2syndmzb 1p853gc348hnr.5hu5u5wj34u6 3pu173e7z985n.2sgkh26wf3ros 2mvl7tsjr8f2.244bu1mk44ohj 1s1m90i3k99i1.11i465otnvgvc g1g2wmb212z.2vkke2jf2fufs z1o4wb0msjk1.xsdb5v8llhrc ef7rkvpay0da.19wvkurspha2b 3jx55d9olmdb4.2ztjhsq6ruorw 1mgshn0gt5u7b.l54f7upq60sp 1bnpj80tyf2hz.1574sbfv60njz 12p0mk8wn0u.fl4a2dxez4tc 2gadytdqvlhhc.uo2sbrzdv8zo 3oofijey5r0yb.3m0349j8dp49s 2abpzut2blrq5.1wjxz255prfkb key3bwstq992.2sme0v6exi4s0 b6841qdg94zq.4djo6wvikkty 11varlh4dvwr5.2fp3fdlr1pug9 1xy3bgp58yufm.3r3bbj38dyt63 2w0imrzeypczs.3k7wkoz26iq34
+serializedKlibFingerprint=2slj8tivja5y6.2kt6ihzw48zzf
+unique_name=Engine.KotlinGen\:DSL
+wasm_targets=wasm-js

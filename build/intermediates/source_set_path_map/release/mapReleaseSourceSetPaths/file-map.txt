@@ -1,0 +1,9 @@
+ship.f.engine.kotlingen.dsl.DSL-pngs-0 /Users/samueltaiwo/AndroidStudioProjects/Compose.Multiplatform.Project.Sample/Engine/KotlinGen/DSL/build/generated/res/pngs/release
+ship.f.engine.kotlingen.dsl.DSL-resValues-1 /Users/samueltaiwo/AndroidStudioProjects/Compose.Multiplatform.Project.Sample/Engine/KotlinGen/DSL/build/generated/res/resValues/release
+ship.f.engine.kotlingen.dsl.DSL-mergeReleaseResources-2 /Users/samueltaiwo/AndroidStudioProjects/Compose.Multiplatform.Project.Sample/Engine/KotlinGen/DSL/build/intermediates/incremental/release/mergeReleaseResources/merged.dir
+ship.f.engine.kotlingen.dsl.DSL-mergeReleaseResources-3 /Users/samueltaiwo/AndroidStudioProjects/Compose.Multiplatform.Project.Sample/Engine/KotlinGen/DSL/build/intermediates/incremental/release/mergeReleaseResources/stripped.dir
+ship.f.engine.kotlingen.dsl.DSL-release-4 /Users/samueltaiwo/AndroidStudioProjects/Compose.Multiplatform.Project.Sample/Engine/KotlinGen/DSL/build/intermediates/merged_res/release/mergeReleaseResources
+ship.f.engine.kotlingen.dsl.DSL-androidMain-5 /Users/samueltaiwo/AndroidStudioProjects/Compose.Multiplatform.Project.Sample/Engine/KotlinGen/DSL/src/androidMain/res
+ship.f.engine.kotlingen.dsl.DSL-androidRelease-6 /Users/samueltaiwo/AndroidStudioProjects/Compose.Multiplatform.Project.Sample/Engine/KotlinGen/DSL/src/androidRelease/res
+ship.f.engine.kotlingen.dsl.DSL-main-7 /Users/samueltaiwo/AndroidStudioProjects/Compose.Multiplatform.Project.Sample/Engine/KotlinGen/DSL/src/main/res
+ship.f.engine.kotlingen.dsl.DSL-release-8 /Users/samueltaiwo/AndroidStudioProjects/Compose.Multiplatform.Project.Sample/Engine/KotlinGen/DSL/src/release/res

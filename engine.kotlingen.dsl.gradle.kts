@@ -43,6 +43,9 @@ kotlin {
         commonMain.dependencies {
             // put your Multiplatform dependencies here
         }
+        jvmMain.dependencies {
+            // Add any dependencies needed by your JVM code
+        }
     }
 }
 

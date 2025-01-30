@@ -1,0 +1,13 @@
+{
+  "name": "Engine-KotlinGen-DSL-wasm-js",
+  "version": "0.0.0-unspecified",
+  "main": "Engine-KotlinGen-DSL-wasm-js.mjs",
+  "types": "Engine-KotlinGen-DSL-wasm-js.d.ts",
+  "devDependencies": {},
+  "dependencies": {
+    "format-util": "^1.0.5"
+  },
+  "peerDependencies": {},
+  "optionalDependencies": {},
+  "bundledDependencies": []
+}
