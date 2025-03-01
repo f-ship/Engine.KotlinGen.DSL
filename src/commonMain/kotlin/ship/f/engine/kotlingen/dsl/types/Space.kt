@@ -1,5 +1,9 @@
 package ship.f.engine.kotlingen.dsl.types
 
-class Space(
-    override val name: String = " "
-) : Code()
+import ship.f.engine.kotlingen.dsl.getRandomString
+
+data class Space(
+    override val name: String = getRandomString()
+) : Code() {
+
+}

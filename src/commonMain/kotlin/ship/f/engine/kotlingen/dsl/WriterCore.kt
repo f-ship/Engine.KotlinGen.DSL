@@ -19,7 +19,7 @@ ${toCode(code.packageName)}
 
 ${code.imports.map { toCode(it) }.toMultiString()}
 
-${code.children.map { toCode(it) }.toMultiString()}
+${code.children.distinctBy { it.name }.map { toCode(it) }.toMultiString()}
     
 """.trimIndent()
             }
@@ -38,40 +38,38 @@ import ${code.name}
 
             is TypeAlias<*> -> {
                 """
-typealias ${code.name} $assign ${code.type?.c?.kType}
+typealias ${code.name} $assign ${code.type?.type}
 """.trimIndent()
             }
 
             is Val<*> -> {
                 """
-${code.visibility.toCode()}val ${code.name}${code.type?.c?.type.toType()}
+${code.visibility.toCode()}val ${code.name}${code.type?.type.toType()}
 """.trimIndent()
             }
 
             is AssignedVal<*> -> {
                 """
-${code.visibility.toCode()}val ${code.name}${code.type?.c?.type.toType()}${code.type?.value?.let { " $assign $it" } ?: ""}
+${code.visibility.toCode()}val ${code.name}${code.type?.type.toType()}${code.type?.value?.let { " $assign $it" } ?: ""}
 """.trimIndent()
             }
 
             is Var<*> -> {
                 """
-${code.visibility.toCode()}val ${code.name}${code.type?.c?.type.toType()}${code.type?.value?.let { " $assign $it" } ?: ""}
-    ${code.getter?.let { "getter(): ${code.type?.c?.type} {\n    return}" } ?: ""}
+${code.visibility.toCode()}var ${code.name}${code.type?.type.toType()}${code.type?.value?.let { " $assign $it" } ?: ""}
+    ${code.getter?.let { "getter(): ${code.type?.type} {\n    return}" } ?: ""}
 """.trimIndent()
             }
 
-            is Space -> {
-                """
-                    
-""".trimIndent()
-            }
+            is Space -> "\n//Space\n"
 
             else -> {
                 "partial file"
             }
-        }
+        }.trimEnd()
     }
+
+    private fun List<Code>.distinctChildren() = distinctBy { if (it is Space) "Space" else it.name }
 
     private fun List<String>.toMultiString(transform: (String) -> String = { it }): String {
         if (isEmpty()) return ""

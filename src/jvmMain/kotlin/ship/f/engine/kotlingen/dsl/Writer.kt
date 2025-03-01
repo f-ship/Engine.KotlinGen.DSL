@@ -2,8 +2,7 @@ package ship.f.engine.kotlingen.dsl
 
 import ship.f.engine.kotlingen.dsl.invoke
 import ship.f.engine.kotlingen.dsl.types.Clazz
-import ship.f.engine.kotlingen.dsl.types.KotlinFile
-import ship.f.engine.kotlingen.dsl.types.KotlinFile.KType
+import ship.f.engine.kotlingen.dsl.types.util.KType
 import java.io.File
 
 fun main() {
@@ -15,106 +14,146 @@ fun main() {
     val entireFile = named EntireFile "FileA" {
         add Package "ship.f.engine.kotlingen.dsl" //DONE
         add Import "kotlin.String" //DONE
-//        named TypeAlias "exampleTypeAlias" assign "List<String>" //Use when using generated types that can only be referenced by string
+
         add TypeAlias "exampleTypeAlias" assign t<List<String>>(KType("List<String>")) //Use when using concrete types can be referenced by type //DONE
-
-//        named Val "exampleVal"(String::class) // Probably don't want to use this either
-        add Val "exampleVal1"(t<String>()) // Will probably need dynamic type referencing as well
-        add Public_Val "examplePublicVal1"(t<String>()) // Will probably need dynamic type referencing as well
-//        named Public_Val "exampleInternalVal"(Int::class) // Will probably not do this
+        space()
+        add Val "exampleVal"(t<String>())
+        add Public_Val "examplePublicVal"(t<String>())
         add Internal_Val "exampleInternalVal"(t<Int>())
-//        named Private_Val "exampleInternalVal"(Int::class) // Will probably not do this
-        add Val "exampleVal2"(t<Int>()) assign t<Int>("1")
-        add Private_Val "examplePrivateVal"(t<Int?>()) assign t("2")
+        add Private_Val "examplePrivateVal"(t<Int>())
 
-//        named Var "exampleVar"(String::class) // Will probably not do this
-//        named Public_Var "exampleInternalVar"(Int::class) // Will probably not do this
+        define Val "exampleVal"(t<String>())
+        define Public_Val "examplePublicVal"(t<String>())
+        define Internal_Val "exampleInternalVal"(t<Int>())
+        define Private_Val "examplePrivateVal"(t<Int>())
+        space()
+        add Val "exampleAssignedVal"(t<Int>()) assign v("1")
+        add Public_Val "examplePublicAssignedVal"(t<Int>()) assign v("2")
+        add Internal_Val "exampleInternalAssignedVal"(t<Int>()) assign v("3")
+        add Private_Val "examplePrivateAssignedVal"(t<Int>()) assign v("4")
+        space()
+        add Var "exampleVar"(t<Int>())
+        add Public_Var "examplePublicVar"(t<Int>())
         add Internal_Var "exampleInternalVar"(t<Int>())
-//        named Private_Var "exampleInternalVar"(Int::class) // Will probably not do this
-        add Var "exampleVar"(t<Int>()) assign t<Int>("3")
-
-//        named Public_Val "exampleInternalVar"(Int::class) getter t<KClass<Int>> { t<KClass<Int>>() } will probably not do this
-        add Internal_Var "exampleInternalVar"(t<Int>()) getter t<Int> { t<Int>("4") }
-        add Internal_Val "exampleInternalVar"(t<Int>()) setter t<Int> { named assign t<Int>("5") } // I don't think a Val should have a setter
-        add Internal_Var "exampleInternalVar"(t<Int>()) setter t<Int> { named assign t<Int>("6") }
-
-        val baseClass = add Class "exampleBaseClass" {}
-        val baseInterface = add Interface "exampleInterface" {}
-
+        add Private_Var "examplePrivateVar"(t<Int>())
+        space()
+        add Var "exampleAssignedVar"(t<Int>()) assign v("1")
+        add Public_Var "exampleAssignedPublicVar"(t<Int>()) assign v("2")
+        add Internal_Var "exampleAssignedInternalVar"(t<Int>()) assign v("3")
+        add Private_Var "exampleAssignedPrivateVar"(t<Int>()) assign v("4")
+        space()
+        add Val "exampleGetterVal"(t<Int>()) getter v {
+            v<Int>("1")
+        }
+        add Val "examplePublicGetterVal"(t<Int>()) getter v {
+            v<Int>("2")
+        }
+        add Val "exampleInternalGetterVal"(t<Int>()) getter v {
+            v<Int>("3")
+        }
+        add Val "examplePrivateGetterVal"(t<Int>()) getter v {
+            v<Int>("4")
+        }
+        space()
+        add Var "exampleGetterVar"(t<Int>()) getter v {
+            v<Int>("1")
+        }
+        add Public_Var "examplePublicGetterVar"(t<Int>()) getter v {
+            v<Int>("2")
+        }
+        add Internal_Var "exampleInternalGetterVar"(t<Int>()) getter v {
+            v<Int>("3")
+        }
+        add Private_Var "examplePrivateGetterVar"(t<Int>()) getter v {
+            v<Int>("4")
+        }
+        space()
+        add Var "exampleInternalVar"(t<Int>()) setter v {
+            named assign v("1")
+        }
+        add Public_Var "exampleInternalVar"(t<Int>()) setter v {
+            named assign v("2")
+        }
+        add Internal_Var "exampleInternalVar"(t<Int>()) setter v {
+            named assign v("3")
+        }
+        add Private_Var "exampleInternalVar"(t<Int>()) setter v {
+            named assign v("4")
+        }
+        space()
+        val baseClass = add Class "exampleBaseClass" { }
+        add Class "exampleClass" { }
         add Annotation_Class "exampleAnnotationClass" { }
         add Sealed_Class "exampleSealedClass" { }
         add Data_Class "exampleDataClass" { }
 
+        val baseInterface = add Interface "exampleInterface" { }
         add Class "exampleClass" withTypes listOf() constructor listOf(
-            "val2"(String::class),
-            "val3"(String::class),
+            "val2"(v<String>()),
+            "val3"(v<String>()),
         ) extends baseClass by baseInterface implements baseInterface body {
 
         }
 
-        add Class "exampleBaseClass" {
-
-        }
-
         add Val "instanceOfClass"(t<Clazz>()) new baseClass withTypes listOf() constructor listOf(
-            "val2"(String::class),
-            "val3"(String::class),
-            "val4"(t<Int>()),
+            "val2"(v<String>()),
+            "val3"(v<String>()),
+            "val4"(v<Int>()),
         )
 
         val myMethod = add Fun "myMethod" withTypes listOf() constructor listOf(
-            "val2"(String::class),
-            "val3"(String::class),
-        ) returns t<String>() block {
+            "val2"(v<String>()),
+            "val3"(v<String>()),
+        ) returns v<String>() block {
 
         }
 
         add Val "methodReturn"(t<String>()) assign myMethod withTypes listOf() calls listOf(
-            "val2"(String::class),
-            "val3"(String::class),
-            "val4"(t<Int>()),
+            "val2"(v<String>()),
+            "val3"(v<String>()),
+            "val4"(v<Int>()),
         )
 
         When {
             "branch1" {
-                t<String>()
+                v<String>()
             }
         }
 
-        add Val "when1"(t<String>()) assign When(t<String>("hello")) {
+        add Val "when1"(t<String>()) assign When(v<String>("hello")) {
             "branch1" {
-                t<String>()
+                v<String>()
             }
         }
 
         add Val "when2"(t<String>()) assign When {
             "branch1" {
-                t<String>()
+                v<String>()
             }
         }
 
-        If(t<Boolean>()) {
-            t<String>()
+        If(v<Boolean>()) {
+            v<String>()
         }
 
-        add Val "if1"(t<String>()) assign If(t<Boolean>()) {
-            t<String>()
-        }.ElseIf(t<Boolean>()) {
-            t<String>()
+        add Val "if1"(t<String>()) assign If(v<Boolean>()) {
+            v<String>()
+        }.ElseIf(v<Boolean>()) {
+            v<String>()
         }.Else {
-            t<String>()
+            v<String>()
         }
 
-        For(t<Boolean>()) {
-            t<String>()
+        For(v<Boolean>()) {
+            v<String>()
         }
 
-        While(t<Boolean>()) {
-            t<String>()
+        While(v<Boolean>()) {
+            v<String>()
         }
 
-        DoWhile(t<Boolean>()) {
-            t<String>()
+        DoWhile(v<Boolean>()) {
+            v<String>()
         }
     }
 
@@ -122,7 +161,8 @@ fun main() {
 
     }
 
-    File("$file${entireFile.name}.kt").apply { writeText(entireFile.save()) }
+    entireFile.save()
+//    File("$file${entireFile.name}.kt").apply { writeText(entireFile.save()) }
 }
 
 const val file = "Engine/KotlinGen/DSL/src/commonMain/kotlin/ship/f/engine/kotlingen/dsl/"
