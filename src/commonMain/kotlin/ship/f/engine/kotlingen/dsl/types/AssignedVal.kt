@@ -2,12 +2,15 @@ package ship.f.engine.kotlingen.dsl.types
 
 import ship.f.engine.kotlingen.dsl.Child
 import ship.f.engine.kotlingen.dsl.types.Code.Visibility.Unspecified
+import kotlin.uuid.ExperimentalUuidApi
+import kotlin.uuid.Uuid
 
-data class AssignedVal<T : Any?>(
+data class AssignedVal<T : Any?> @OptIn(ExperimentalUuidApi::class) constructor(
     override val name: String,
-    val type: TypedString<T>? = null,
-    val typedBlock: TypedBlock<T>? = null,
+    val type: TypedValue<T>? = null,
+    val getter: TypedBlock<T>? = null,
     val visibility: Visibility = Unspecified,
+    override val id: Uuid = Uuid.random(),
 ) : Value<T>(), Child {
 
 }

@@ -17,7 +17,17 @@ Refactor effort
 
 1) Break up the Kotlin File into definable things DONE
 2) Actually implement the difference between add and define DONE
-3) Complete WriterCore for all currently defined methods 
+
+----------------------------------------------------------------------------------------------------
+Complete WriterCore for all currently defined methods 
+1) MONDAY Get intent working DONE
+2) TUESDAY Create Typed strategy for typed block and values a sealed class DONE
+3) WEDNESDAY Complete If IfElse Else, Create a better id naming system
+        ID a) create a random id function, b) add to all classes as default, c) share id between code DONE
+4) THURSDAY Complete For
+5) FRIDAY Complete While
+6) SATURDAY Complete DoWhile
+7) SUNDAY Complete Class block + definition
 
 ----------------------------------------------------------------------------------------------------
 

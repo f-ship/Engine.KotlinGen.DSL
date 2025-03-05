@@ -4,8 +4,11 @@ import ship.f.engine.kotlingen.dsl.Bundle
 import ship.f.engine.kotlingen.dsl.types.Code.Visibility.Internal
 import ship.f.engine.kotlingen.dsl.types.Code.Visibility.Private
 import ship.f.engine.kotlingen.dsl.types.Code.Visibility.Public
+import ship.f.engine.kotlingen.dsl.types.TypedValue.Value.CodeValue
 import ship.f.engine.kotlingen.dsl.types.util.KType
+import kotlin.uuid.ExperimentalUuidApi
 
+@OptIn(ExperimentalUuidApi::class)
 @Suppress("FunctionName")
 abstract class KotlinFile : Container() {
     private var shouldShowChild = true
@@ -45,67 +48,42 @@ abstract class KotlinFile : Container() {
     infix fun KotlinFile.TypeAlias(a: String) = TypeAlias<Any>(name = a)
 
     infix fun <T : Any?> KotlinFile.Val(v: Bundle<Val<T>.() -> Unit, T>) =
-        Val(name = v.name, type = v.type).also {
-            if (shouldShowChild) {
-                children = children.plus(it)
-            }
-        }
+        Val(name = v.name, type = v.type).also { addChild(it) }
 
     infix fun <T : Any?> KotlinFile.Public_Val(v: Bundle<Val<T>.() -> Unit, T>) =
-        Val(name = v.name, type = v.type, visibility = Public).also {
-            if (shouldShowChild) {
-                children = children.plus(it)
-            }
-        }
+        Val(name = v.name, type = v.type, visibility = Public).also { addChild(it) }
 
     infix fun <T : Any?> KotlinFile.Internal_Val(v: Bundle<Val<T>.() -> Unit, T>) =
-        Val(name = v.name, type = v.type, visibility = Internal).also {
-            if (shouldShowChild) {
-                children = children.plus(it)
-            }
-        }
+        Val(name = v.name, type = v.type, visibility = Internal).also { addChild(it) }
 
     infix fun <T : Any?> KotlinFile.Private_Val(v: Bundle<Val<T>.() -> Unit, T>) =
-        Val(name = v.name, type = v.type, visibility = Private).also {
-            if (shouldShowChild) {
-                children = children.plus(it)
-            }
-        }
+        Val(name = v.name, type = v.type, visibility = Private).also { addChild(it) }
 
     infix fun <T : Any?> KotlinFile.Var(v: Bundle<Val<T>.() -> Unit, T>) =
-        Var(name = v.name, type = v.type).also {
-            if (shouldShowChild) {
-                children = children.plus(it)
-            }
-        }
+        Var(name = v.name, type = v.type).also { addChild(it) }
 
     infix fun <T : Any?> KotlinFile.Public_Var(v: Bundle<Val<T>.() -> Unit, T>) =
-        Var(name = v.name, type = v.type, visibility = Public).also {
-            if (shouldShowChild) {
-                children = children.plus(it)
-            }
-        }
+        Var(name = v.name, type = v.type, visibility = Public).also { addChild(it) }
 
     infix fun <T : Any?> KotlinFile.Internal_Var(v: Bundle<Val<T>.() -> Unit, T>) =
-        Var(name = v.name, type = v.type, visibility = Internal).also {
-            if (shouldShowChild) {
-                children = children.plus(it)
-            }
-        }
+        Var(name = v.name, type = v.type, visibility = Internal).also { addChild(it) }
 
     infix fun <T : Any?> KotlinFile.Private_Var(v: Bundle<Val<T>.() -> Unit, T>) =
-        Var(name = v.name, type = v.type, visibility = Private).also {
-            if (shouldShowChild) {
-                children = children.plus(it)
-            }
-        }
+        Var(name = v.name, type = v.type, visibility = Private).also { addChild(it) }
 
-    infix fun KotlinFile.Class(v: Bundle<Clazz, Any>) = Clazz(name = v.name)
-    infix fun KotlinFile.Class(name: String) = Clazz(name = name)
-    infix fun KotlinFile.Annotation_Class(v: Bundle<Clazz, Any>) = Clazz(name = v.name)
-    infix fun KotlinFile.Sealed_Class(v: Bundle<Clazz, Any>) = Clazz(name = v.name)
-    infix fun KotlinFile.Data_Class(v: Bundle<Clazz, Any>) = Clazz(name = v.name)
-    infix fun KotlinFile.Interface(v: Bundle<Interface, Any>) = Interface(name = v.name)
+    infix fun KotlinFile.Class(v: Bundle<Clazz, Any>) = Clazz(name = v.name).also { addChild(it) }
+    infix fun KotlinFile.Class(name: String) = Clazz(name = name).also { addChild(it) }
+    infix fun KotlinFile.Annotation_Class(v: Bundle<Clazz, Any>) =
+        Clazz(name = v.name).also { addChild(it) }
+
+    infix fun KotlinFile.Sealed_Class(v: Bundle<Clazz, Any>) =
+        Clazz(name = v.name).also { addChild(it) }
+
+    infix fun KotlinFile.Data_Class(v: Bundle<Clazz, Any>) =
+        Clazz(name = v.name).also { addChild(it) }
+
+    infix fun KotlinFile.Interface(v: Bundle<Interface, Any>) =
+        Interface(name = v.name).also { addChild(it) }
 
     infix fun <R> KotlinFile.Fun(v: Bundle<Val<R>.() -> Unit, R>) =
         Fun(name = v.name, returnType = v<Fun<R>>())
@@ -113,94 +91,97 @@ abstract class KotlinFile : Container() {
     infix fun KotlinFile.Fun(n: String) = Fun(name = n, returnType = v<Any>())
 
     inline fun <T, reified R> KotlinFile.When(
-        arg: TypedString<T>,
-        block: When<R>.(TypedString<T>) -> TypedString<R>
+        arg: TypedValue<T>,
+        block: When<R>.(TypedValue<T>) -> TypedValue<R>
     ): When<R> {
         val w = When(name = "", returnType = v<R>())
         block(When(name = "", returnType = v<R>()), arg)
         return w
     }
 
-    inline fun <reified R> KotlinFile.When(block: When<R>.() -> TypedString<R>): When<R> {
+    inline fun <reified R> KotlinFile.When(block: When<R>.() -> TypedValue<R>): When<R> {
         val w = When(name = "", returnType = v<R>())
         block(When(name = "", returnType = v<R>()))
         return w
     }
 
     inline fun <reified R> KotlinFile.If(
-        arg: TypedString<Boolean>,
-        block: If<R>.() -> TypedString<R>
-    ): If<R> {
-        val i = If(statement = "", returnType = v<R>())
-        block(If(statement = "", returnType = v<R>()))
-        return i
+        arg: TypedValue<Boolean>,
+        noinline block: IfBranch<R>.() -> TypedValue<R>
+    ): IfBranch<R> {
+        return IfBranch(
+            statement = "if",
+            returnType = v<R>(),
+            statementTypedString = arg,
+            ifBlock = block,
+        )
     }
 
     inline fun <reified R> KotlinFile.For(
-        arg: TypedString<Boolean>,
-        block: For.() -> TypedString<R>
+        arg: TypedValue<Boolean>,
+        block: For.() -> TypedValue<R>
     ): For {
         val f = For(name = "")
         return f
     }
 
     inline fun <reified R> KotlinFile.While(
-        arg: TypedString<Boolean>,
-        block: While.() -> TypedString<R>
+        arg: TypedValue<Boolean>,
+        block: While.() -> TypedValue<R>
     ): While {
         val w = While(statement = "")
         return w
     }
 
     inline fun <reified R> KotlinFile.DoWhile(
-        arg: TypedString<Boolean>,
-        block: While.() -> TypedString<R>
+        arg: TypedValue<Boolean>,
+        block: While.() -> TypedValue<R>
     ): While {
         val w = While(statement = "")
         return w
     }
 
     // Used for complex types like List<String>
-    inline fun <reified T : Any?> t(type: KType): TypedString<T> = TypedString(type = type.type)
+    inline fun <reified T : Any?> t(type: KType): TypedValue<T> = TypedValue(type = type.type)
 
     // Used for simple types like String
-    inline fun <reified T : Any?> t(): TypedString<T> = TypedString(
+    inline fun <reified T : Any?> t(): TypedValue<T> = TypedValue(
         type = T::class.simpleName,
         import = T::class.qualifiedName,
     )
 
     // Used to create a typed value, the type will not actually get used.
-    inline fun <reified T : Any?> v(string: String? = null): TypedString<T> = TypedString(
+    inline fun <reified T : Any?> v(string: String? = null): TypedValue<T> = TypedValue(
         type = T::class.simpleName,
-        value = string
+        value = string?.let { TypedValue.Value.StringValue(it) }
     )
 
-    // Currently has no uses as needs to be implemented
-    inline fun <reified T : Any?> v(noinline block: TypedBlock<T>.() -> TypedString<T>): TypedBlock<T> =
+    inline fun <reified T : Any?> v(noinline block: TypedBlock<T>.() -> TypedValue<T>): TypedBlock<T> =
         TypedBlock(block = block)
 
     // TypeAlias
-    infix fun <T, R> TypeAlias<T>.assign(t: TypedString<R>) =
-        TypeAlias(name = name, type = t).also {
-            if (shouldShowChild) {
-                children = children.plus(it)
-            }
-        }
+    infix fun <T, R> TypeAlias<T>.assign(t: TypedValue<R>) =
+        TypeAlias(name = name, type = t).also { addChild(it) }
 
     // Val
-    infix fun <T> Val<T>.assign(t: TypedString<T>) =
-        AssignedVal(name = name, type = t).also { code ->
-            this@KotlinFile.children = this@KotlinFile.children.map {
-                if (it.name == code.name && shouldShowChild) {
-                    code
-                } else it
-            }
-        }
+    infix fun <T> Val<T>.assign(t: TypedValue<T>) =
+        AssignedVal(name = name, type = t, id = id).also { addChild(it) }
 
-    infix fun <R> Val<R>.assign(t: Fun<R>) = AssignedVal(name = name, type = v<Fun<R>>())
-    infix fun <T> Val<T>.assign(t: When<T>) = AssignedVal(name = name, type = v<When<T>>())
-    infix fun <T> Val<T>.assign(t: Else<T>) = AssignedVal(name = name, type = v<If<T>>())
-    infix fun <T> Val<T>.getter(t: TypedBlock<T>) = AssignedVal(name = name, typedBlock = t)
+    infix fun <R> Val<R>.assign(t: Fun<R>) =
+        AssignedVal(name = name, type = v<Fun<R>>(), id = id).also { addChild(it) }
+
+    infix fun <T> Val<T>.assign(t: When<T>) =
+        AssignedVal(name = name, type = v<When<T>>(), id = id).also { addChild(it) }
+
+    infix fun <T> Val<T>.assign(t: ElseBranch<T>) =
+        AssignedVal(
+            name = name,
+            type = TypedValue<T>(value = CodeValue(t)),
+            id = id,
+        ).also { addChild(it) }
+
+    infix fun <T> Val<T>.getter(t: TypedBlock<T>) =
+        AssignedVal(name = name, getter = t.copy(definition = "getter"), id = id).also { addChild(it) }
 
     infix fun Val<Clazz>.new(clazz: Clazz) = Val<Clazz>(name = clazz.name)
     infix fun Val<Clazz>.withTypes(types: List<Bundle<*, *>>) = this
@@ -212,17 +193,14 @@ abstract class KotlinFile : Container() {
 
 
     // Var
-    infix fun <T> Var<T>.assign(t: TypedString<T>) =
-        Var(name = name, type = t).also { code ->
-            children = children.map {
-                if (it.name == code.name && shouldShowChild) {
-                    code
-                } else it
-            }
-        }
+    infix fun <T> Var<T>.assign(t: TypedValue<T>) =
+        Var(name = name, type = t, id = id).also { addChild(it) }
 
-    infix fun <T> Var<T>.getter(t: TypedBlock<T>) = Var(name = name, getter = t)
-    infix fun <T> Var<T>.setter(t: TypedBlock<T>) = Var(name = name, setter = t)
+    infix fun <T> Var<T>.getter(t: TypedBlock<T>) =
+        Var(name = name, getter = t.copy(definition = "getter"), id = id).also { addChild(it) }
+
+    infix fun <T> Var<T>.setter(t: TypedBlock<T>) =
+        Var(name = name, setter = t.copy(definition = "setter"), id = id).also { addChild(it) }
 
     // Class
     infix fun Clazz.withTypes(types: List<Bundle<Any, Any>>) = this
@@ -230,27 +208,36 @@ abstract class KotlinFile : Container() {
     infix fun Clazz.extends(clazz: Clazz) = this
     infix fun Clazz.implements(int: Interface) = this
     infix fun Clazz.by(int: Interface) = this
-    infix fun Clazz.body(block: Clazz.() -> Unit) = this
+    infix fun Clazz.body(block: Clazz.() -> Unit) = this.copy(block = block).also { addChild(it) }
 
     // Fun
     infix fun <R> Fun<R>.withTypes(types: List<Bundle<out Any, Any>>) = this
     infix fun <R> Fun<R>.constructor(args: List<Bundle<out Any, out Any>>) = this
-    infix fun <R, N> Fun<R>.returns(t: TypedString<N>) = Fun(name = "", returnType = t)
+    infix fun <R, N> Fun<R>.returns(t: TypedValue<N>) = Fun(name = "", returnType = t)
     infix fun <R> Fun<R>.block(block: Fun<R>.() -> Unit) = this
 
-    // If
-    inline fun <reified R> If<R>.ElseIf(
-        arg: TypedString<Boolean>,
-        block: If<R>.() -> TypedString<R>
-    ): If<R> {
-        val i = If(statement = "", returnType = v<R>())
-        block(If(statement = "", returnType = v<R>()))
-        return i
+    // IfBranch
+    inline fun <reified R> IfBranch<R>.ElseIf(
+        statement: TypedValue<Boolean>,
+        noinline block: IfBranch<R>.() -> TypedValue<R>
+    ): IfBranch<R> {
+        return IfBranch(
+            statement = "elseif",
+            returnType = v<R>(), // Need to execute block
+            statementTypedString = statement,
+            ifBlock = block,
+            ifBlocks = ifBlocks.plus(this),
+        )
     }
 
-    inline infix fun <reified R> If<R>.Else(block: Else<R>.() -> Unit): Else<R> {
-        val e = Else(name = "", returnType = v<R>())
-        block(Else(name = "", returnType = v<R>()))
-        return e
+    inline infix fun <reified R> IfBranch<R>.Else(
+        noinline block: ElseBranch<R>.() -> TypedValue<R>
+    ): ElseBranch<R> {
+        return ElseBranch(
+            name = "else",
+            returnType = v<R>(),
+            elseBlock = block,
+            ifBlocks = ifBlocks.plus(this),
+        )
     }
 }

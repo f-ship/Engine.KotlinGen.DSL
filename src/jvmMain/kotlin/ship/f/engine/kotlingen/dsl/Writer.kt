@@ -3,7 +3,6 @@ package ship.f.engine.kotlingen.dsl
 import ship.f.engine.kotlingen.dsl.invoke
 import ship.f.engine.kotlingen.dsl.types.Clazz
 import ship.f.engine.kotlingen.dsl.types.util.KType
-import java.io.File
 
 fun main() {
 //    val entireFile = EntireFile("EntireFileMock")
@@ -68,17 +67,17 @@ fun main() {
             v<Int>("4")
         }
         space()
-        add Var "exampleInternalVar"(t<Int>()) setter v {
-            named assign v("1")
+        add Var "exampleSetterVar"(t<Int>()) setter v {
+            add assign v("1")
         }
-        add Public_Var "exampleInternalVar"(t<Int>()) setter v {
-            named assign v("2")
+        add Public_Var "exampleSetterPublicVar"(t<Int>()) setter v {
+            add assign v("2")
         }
-        add Internal_Var "exampleInternalVar"(t<Int>()) setter v {
-            named assign v("3")
+        add Internal_Var "exampleSetterInternalVar"(t<Int>()) setter v {
+            add assign v("3")
         }
-        add Private_Var "exampleInternalVar"(t<Int>()) setter v {
-            named assign v("4")
+        add Private_Var "exampleSetterPrivateVar"(t<Int>()) setter v {
+            add assign v("4")
         }
         space()
         val baseClass = add Class "exampleBaseClass" { }
@@ -92,7 +91,18 @@ fun main() {
             "val2"(v<String>()),
             "val3"(v<String>()),
         ) extends baseClass by baseInterface implements baseInterface body {
-
+            add Val "exampleClassGetterVal"(t<Int>()) getter v {
+                v<Int>("1")
+            }
+            add Val "exampleClassPublicGetterVal"(t<Int>()) getter v {
+                v<Int>("2")
+            }
+            add Val "exampleClassInternalGetterVal"(t<Int>()) getter v {
+                v<Int>("3")
+            }
+            add Val "exampleClassPrivateGetterVal"(t<Int>()) getter v {
+                v<Int>("4")
+            }
         }
 
         add Val "instanceOfClass"(t<Clazz>()) new baseClass withTypes listOf() constructor listOf(
@@ -136,7 +146,7 @@ fun main() {
             v<String>()
         }
 
-        add Val "if1"(t<String>()) assign If(v<Boolean>()) {
+        add Val "if1"(t<String>()) assign If(v<Boolean>(""""A" == exampleVal""")) {
             v<String>()
         }.ElseIf(v<Boolean>()) {
             v<String>()

@@ -1,9 +1,12 @@
 package ship.f.engine.kotlingen.dsl.types
 
 import ship.f.engine.kotlingen.dsl.Child
+import kotlin.uuid.ExperimentalUuidApi
+import kotlin.uuid.Uuid
 
-data class Block(
-    override val name: String, // remove at some point
+data class Block @OptIn(ExperimentalUuidApi::class) constructor(
+    override val name: String,
+    override val id: Uuid = Uuid.random(),
 ) : Code(), Child {
 
 }

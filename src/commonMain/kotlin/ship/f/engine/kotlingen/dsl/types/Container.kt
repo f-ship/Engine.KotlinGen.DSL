@@ -1,11 +1,21 @@
 package ship.f.engine.kotlingen.dsl.types
 
+import kotlin.uuid.ExperimentalUuidApi
+
 abstract class Container : Code() {
     var children: List<Code> = listOf()
+    @OptIn(ExperimentalUuidApi::class)
+    val uniqueChildren
+        get() = children
+            .reversed()
+            .distinctBy { it.id }
+            .reversed()
 
     private fun replaceChild(code: Code) {
         children = children.map {
-            if (it.name == code.name) { code } else it
+            if (it.name == code.name) {
+                code
+            } else it
         }
     }
 
