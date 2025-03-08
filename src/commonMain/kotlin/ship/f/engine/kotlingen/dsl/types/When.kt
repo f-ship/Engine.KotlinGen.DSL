@@ -4,11 +4,11 @@ import ship.f.engine.kotlingen.dsl.Child
 import kotlin.uuid.ExperimentalUuidApi
 import kotlin.uuid.Uuid
 
-data class When<R> @OptIn(ExperimentalUuidApi::class) constructor(
+data class When<T,R> @OptIn(ExperimentalUuidApi::class) constructor(
     override val name: String,
-    val returnType: TypedValue<R>,
+    val block: When<T,R>.(TypedValue<T>) -> TypedValue<R>,
     override val id: Uuid = Uuid.random(),
-    override var children: List<Code> = listOf(),
+    override var children: MutableList<Code> = mutableListOf(),
 ) : Container(), Child {
-    operator fun String.invoke(block: When<R>.() -> TypedValue<R>) = block(this@When)
+    operator fun String.invoke(block: When<T,R>.() -> TypedValue<R>) = block(this@When)
 }

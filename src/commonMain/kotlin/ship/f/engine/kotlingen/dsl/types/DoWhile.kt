@@ -9,7 +9,7 @@ data class DoWhile @OptIn(ExperimentalUuidApi::class) constructor(
     val block: DoWhile.() -> Unit,
     override val name: String = "DoWhile",
     override val id: Uuid = Uuid.random(),
-    override var children: List<Code> = listOf(),
+    override var children: MutableList<Code> = mutableListOf(),
 ) : Container(), Child {
     fun execute() {
         block()

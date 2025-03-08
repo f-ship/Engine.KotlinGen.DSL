@@ -8,7 +8,7 @@ data class Interface @OptIn(ExperimentalUuidApi::class) constructor(
     val typeArgs: List<TypedValue<*>> = listOf(),
     override val name: String,
     override val id: Uuid = Uuid.random(),
-    override var children: List<Code> = listOf(),
+    override var children: MutableList<Code> = mutableListOf(),
 ) : Container(), Child {
 
 }

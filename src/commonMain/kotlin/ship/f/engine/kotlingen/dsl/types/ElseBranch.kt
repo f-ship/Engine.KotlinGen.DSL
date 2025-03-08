@@ -9,7 +9,7 @@ data class ElseBranch<R> @OptIn(ExperimentalUuidApi::class) constructor(
     val previous: If,
     override val name: String = "ElseBranch", // will remove,
     override val id: Uuid = Uuid.random(),
-    override var children: List<Code> = listOf(),
+    override var children: MutableList<Code> = mutableListOf(),
 ) : Else() {
     fun execute() { // TODO How to get these if blocks to run here? Definitely just include the if's itself as we need the statement
         returnValue = block()

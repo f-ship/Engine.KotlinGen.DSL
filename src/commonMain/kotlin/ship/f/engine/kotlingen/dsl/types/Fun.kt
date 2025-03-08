@@ -8,7 +8,7 @@ data class Fun<R : Any?> @OptIn(ExperimentalUuidApi::class) constructor(
     override val name: String,
     val returnType: TypedValue<R>? = null,
     override val id: Uuid = Uuid.random(),
-    override var children: List<Code> = listOf(),
+    override var children: MutableList<Code> = mutableListOf(),
 ) : Container(), Child {
 
 }

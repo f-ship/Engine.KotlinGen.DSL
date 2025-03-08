@@ -26,10 +26,6 @@ class WriterCore {
         return when (code) {
             is EntireFile ->
                 """
-                |${toCode(code.packageName)}
-                |
-                |${code.imports.map { toCode(it) }.toMultiString()}
-                |
                 |${
                     code.uniqueChildren
                         .map { toCode(it) }
@@ -73,9 +69,7 @@ class WriterCore {
 
             is Space ->
                 """
-                |//
-                |// 
-                |//
+                ||     
                 """
 
             is TypedBlock<*> -> code.copy().apply {

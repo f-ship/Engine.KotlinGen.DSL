@@ -24,12 +24,7 @@ operator fun <B, T : Any?> String.invoke(block: B.() -> Unit = {}) =
 operator fun <T> String.invoke(type: TypedValue<T>) = Bundle<Val<T>.() -> Unit, T>(name = this, type = type)
 
 @OptIn(ExperimentalUuidApi::class)
-infix fun Create.EntireFile(file: Bundle<EntireFile, Any>) = EntireFile(names = file.name).apply {
-    name = file.name
-    block = file.block
-}
+infix fun Create.EntireFile(file: Bundle<EntireFile, Any>) = EntireFile(name = file.name, block = file.block)
 
 @OptIn(ExperimentalUuidApi::class)
-infix fun Create.PartialFile(file: Bundle<PartialFile, Any>) = PartialFile(names = file.name).apply {
-    name = file.name
-}
+infix fun Create.PartialFile(file: Bundle<PartialFile, Any>) = PartialFile(name = file.name, block = file.block)

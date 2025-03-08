@@ -12,7 +12,7 @@ data class TypedBlock<T : Any?> @OptIn(ExperimentalUuidApi::class) constructor(
     val definition: String = "{",
     override val name: String = returnValue?.type ?: "TypedBlock",
     override val id: Uuid = Uuid.random(),
-    override var children: List<Code> = listOf(),
+    override var children: MutableList<Code> = mutableListOf(),
 ) : Container(), Child {
 
     fun execute() {

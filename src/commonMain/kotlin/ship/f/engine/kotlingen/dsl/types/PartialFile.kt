@@ -4,9 +4,10 @@ import kotlin.uuid.ExperimentalUuidApi
 import kotlin.uuid.Uuid
 
 data class PartialFile @OptIn(ExperimentalUuidApi::class) constructor(
-    val names: String,
+    override val name: String,
     override val id: Uuid = Uuid.random(),
-    override var children: List<Code> = listOf(),
+    override var children: MutableList<Code> = mutableListOf(),
+    val block: PartialFile.() -> Unit,
 ) : KotlinFile() {
-    val named = this
+
 }

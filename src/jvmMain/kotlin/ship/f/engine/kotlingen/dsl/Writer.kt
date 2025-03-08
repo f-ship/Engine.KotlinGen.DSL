@@ -2,7 +2,6 @@ package ship.f.engine.kotlingen.dsl
 
 import ship.f.engine.kotlingen.dsl.invoke
 import ship.f.engine.kotlingen.dsl.types.Clazz
-import ship.f.engine.kotlingen.dsl.types.InfixDelegate
 import ship.f.engine.kotlingen.dsl.types.util.KType
 
 fun main() {
@@ -132,17 +131,17 @@ fun main() {
             }
         }
 
-        add Val "when1"(t<String>()) assign When(v<String>("hello")) {
-            "branch1" {
-                v<String>()
-            }
-        }
-
-        add Val "when2"(t<String>()) assign When {
-            "branch1" {
-                v<String>()
-            }
-        }
+//        add Val "when1"(t<String>()) assign When(v<String>("hello")) {
+//            "branch1" {
+//                v<String>()
+//            }
+//        }
+//
+//        add Val "when2"(t<String>()) assign When {
+//            "branch1" {
+//                v<String>()
+//            }
+//        }
 
         If(v<Boolean>()) {
             v<Unit>()

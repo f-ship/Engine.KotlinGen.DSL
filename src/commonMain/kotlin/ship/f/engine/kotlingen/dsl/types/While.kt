@@ -9,7 +9,7 @@ data class While @OptIn(ExperimentalUuidApi::class) constructor(
     val block: While.() -> Unit,
     override val name: String = "While",
     override val id: Uuid = Uuid.random(),
-    override var children: List<Code> = listOf(),
+    override var children: MutableList<Code> = mutableListOf(),
 ) : Container(), Child {
     fun execute() {
         block()

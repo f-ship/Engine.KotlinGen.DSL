@@ -11,7 +11,7 @@ data class AssignedVal<T : Any?> @OptIn(ExperimentalUuidApi::class) constructor(
     val getter: TypedBlock<T>? = null,
     val visibility: Visibility = Unspecified,
     override val id: Uuid = Uuid.random(),
-    override var children: List<Code> = listOf(),
+    override val children: MutableList<Code> = mutableListOf(),
 ) : Value<T>(), Child {
 
 }

@@ -21,25 +21,23 @@ data class Clazz @OptIn(ExperimentalUuidApi::class) constructor(
     val superClass: Clazz? = null,
     val implementedInterfaces: List<Pair<Interface, Clazz?>> = listOf(),
     override val id: Uuid = Uuid.random(),
-    override var children: List<Code> = listOf(),
+    override val children: MutableList<Code> = mutableListOf(),
 ) : Container(), Child {
-    private var shouldShowChild = true
 
-    val add
-        get() = this.apply { shouldShowChild = true }
+     val add
+        get() = this
 
     val define
-        get() = this.apply { shouldShowChild = false }
+        get() = this
 
     fun execute(){
         block.invoke(this)
     }
 
     private fun addChild(child: Code) {
-        if (shouldShowChild) {
-            children = children.plus(child)
-        }
+        children.add(child)
     }
+
     @OptIn(ExperimentalUuidApi::class)
     infix fun <T : Any?> Clazz.Val(v: Bundle<Val<T>.() -> Unit, T>) = Val(name = v.name, type = v.type).also { addChild(it) }
     @OptIn(ExperimentalUuidApi::class)

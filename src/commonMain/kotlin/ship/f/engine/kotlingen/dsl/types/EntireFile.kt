@@ -4,9 +4,10 @@ import kotlin.uuid.ExperimentalUuidApi
 import kotlin.uuid.Uuid
 
 data class EntireFile @OptIn(ExperimentalUuidApi::class) constructor(
-    val names: String,
+    override val name: String,
     override val id: Uuid = Uuid.random(),
-    override var children: List<Code> = listOf(),
-) : KotlinFile(), Infix by InfixDelegate() {
+    override var children: MutableList<Code> = mutableListOf(),
+    val block: EntireFile.() -> Unit,
+) : KotlinFile(children = children) {
 
 }

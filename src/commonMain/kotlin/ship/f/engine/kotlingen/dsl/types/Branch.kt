@@ -8,7 +8,7 @@ data class Branch @OptIn(ExperimentalUuidApi::class) constructor(
     val arg: String? = null, // May turn into a typed string, in fact the Branch could be much more sophisticated in general
     override val name: String = "Branch",
     override val id: Uuid = Uuid.random(),
-    override var children: List<Code> = listOf(),
+    override val children: MutableList<Code> = mutableListOf(),
 ) : Container(), Child {
 
 }

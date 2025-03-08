@@ -10,7 +10,7 @@ data class ElseIfBranch<R> @OptIn(ExperimentalUuidApi::class) constructor(
     val previous: If,
     override val name: String = "ElseIfBranch",
     override val id: Uuid = Uuid.random(),
-    override var children: List<Code> = listOf(),
+    override var children: MutableList<Code> = mutableListOf(),
 ) : If() {
     fun execute() {
         returnValue = block()
