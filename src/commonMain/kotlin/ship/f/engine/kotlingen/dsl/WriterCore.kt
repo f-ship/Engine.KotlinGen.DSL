@@ -3,8 +3,12 @@ package ship.f.engine.kotlingen.dsl
 import ship.f.engine.kotlingen.dsl.types.AssignedVal
 import ship.f.engine.kotlingen.dsl.types.Clazz
 import ship.f.engine.kotlingen.dsl.types.Code
+import ship.f.engine.kotlingen.dsl.types.DoWhile
 import ship.f.engine.kotlingen.dsl.types.ElseBranch
 import ship.f.engine.kotlingen.dsl.types.EntireFile
+import ship.f.engine.kotlingen.dsl.types.ElseIfBranch
+import ship.f.engine.kotlingen.dsl.types.For
+import ship.f.engine.kotlingen.dsl.types.IfBranch
 import ship.f.engine.kotlingen.dsl.types.Import
 import ship.f.engine.kotlingen.dsl.types.Package
 import ship.f.engine.kotlingen.dsl.types.Space
@@ -13,6 +17,7 @@ import ship.f.engine.kotlingen.dsl.types.TypedBlock
 import ship.f.engine.kotlingen.dsl.types.TypedValue
 import ship.f.engine.kotlingen.dsl.types.Val
 import ship.f.engine.kotlingen.dsl.types.Var
+import ship.f.engine.kotlingen.dsl.types.While
 import kotlin.uuid.ExperimentalUuidApi
 
 @OptIn(ExperimentalUuidApi::class)
@@ -55,7 +60,7 @@ class WriterCore {
 
             is AssignedVal<*> ->
                 """
-                |${indent()}${code.visibility.toCode()}val ${code.name}${code.type?.type.toType()}${code.type?.value?.let { " $assign ${it.toCode()}" } ?: ""}${code.type?.code?.let { " $assign ${toCode(it)}" } ?: ""}
+                |${indent()}${code.visibility.toCode()}val ${code.name}${code.type?.type.toType()}${code.type?.value?.let { " $assign ${it.toCode()}" } ?: ""}
                 |${code.getter?.let { toCode(it,indent + 4) } ?: removeLine}
                 |"""
 
@@ -87,33 +92,92 @@ class WriterCore {
 
             is Clazz -> code.copy().apply {
                 execute()
-            }.let {
+            }.run {
                 """
-                |${indent()}class ${code.name}${if (code.args.isNotEmpty()) "(${code.args.toCode()})" else ""}${if (it.children.isNotEmpty()) " {" else ""}
-                |${indent()}${if (it.children.isNotEmpty()) it.uniqueChildren.map { child -> toCode(child,4) }.toMultiString() else removeLine}
-                |${indent()}${if (it.children.isNotEmpty()) "}" else removeLine}
+                |${indent()}class ${name}${toTypeArgs()}${toArgs()}${toFirstSeparator()}${toSuperClass()}${toSecondSeparator() }${toInterfaces()}${toBodyStart()}
+                |${indent()}${toBody()}
+                |${indent()}${toBodyEnd()}
                 """
             }
 
-//            is IfBranch<*> ->
-//                """
-//                |${indent()}if (${code.statementTypedString.value}) {
-//                |${indent()}${toCode(code.ifBlock,indent + 4)}
-//                |${indent()}}
-//                """
+            is IfBranch<*> -> code.copy().apply {
+                execute()
+            }.let {
+                """
+                |${indent()}if(${it.statement.value.toCode()}) {
+                |${indent()}${it.uniqueChildren.map { child -> toCode(child,4) }.toMultiString()}
+                |${indent()}    ${it.returnValue.value.toCode()}
+                |${indent()}}
+                """
+            }
 
-            is ElseBranch<*> ->
+            is ElseIfBranch<*> -> code.copy().apply {
+                execute()
+            }.let {
                 """
-                |${indent()}if (${code.ifBlocks.first().statementTypedString.value.toCode()}) {
-                |${indent()}
-                |${indent()}}${"d"}
+                |${indent()}${toCode(it.previous)} else if(${it.statement.value.toCode()}) {
+                |${indent()}${it.uniqueChildren.map { child -> toCode(child,4) }.toMultiString()}
+                |${indent()}    ${it.returnValue.value.toCode()}
+                |${indent()}}
                 """
+            }
+
+            is ElseBranch<*> -> code.copy().apply {
+                execute()
+            }.let {
+                """
+                |${indent()}${toCode(it.previous)} else {
+                |${indent()}${it.uniqueChildren.map { child -> toCode(child,4) }.toMultiString()}
+                |${indent(4)}${it.returnValue.value.toCode()}
+                |${indent()}}
+                """
+            }
+
+            is For -> code.copy().apply {
+                execute()
+            }.let {
+                """
+                |${indent()}for(${it.statement}){
+                |${indent()}${it.uniqueChildren.map { child -> toCode(child,4) }.toMultiString()}
+                |${indent()}}
+                """
+            }
+
+            is While -> code.copy().apply {
+                execute()
+            }.let {
+                """
+                |${indent()}while(${it.statement.value.toCode()}){
+                |${indent()}${it.uniqueChildren.map { child -> toCode(child,4) }.toMultiString()}
+                |${indent()}}
+                """
+            }
+
+            is DoWhile -> code.copy().apply {
+                execute()
+            }.let {
+                """
+                |${indent()}do {
+                |${indent()}${it.uniqueChildren.map { child -> toCode(child,4) }.toMultiString()}
+                |${indent()}} while (${it.statement.value.toCode()})
+                """
+            }
 
             else -> {
                 "partial file"
             }
         }.removeWhitespace()
     }
+
+    private fun Clazz.toTypeArgs() = if (typeArgs.isNotEmpty()) "<${typeArgs.map { arg -> arg.type ?: "" }.toSingleString(", ")}>" else ""
+    private fun Clazz.toArgs(empty: String = "") = if (args.isNotEmpty()) "(${args.map { arg -> "${arg.name}: ${arg.type?.type}" }.toSingleString(", ")})" else empty
+    private fun Clazz.toFirstSeparator() = if (superClass != null || implementedInterfaces.isNotEmpty()) " : " else ""
+    private fun Clazz.toSecondSeparator() = if (superClass != null && implementedInterfaces.isNotEmpty()) ", " else ""
+    private fun Clazz.toSuperClass() = superClass?.run { "${name}${toTypeArgs()}${toArgs("()")}" } ?: ""
+    private fun Clazz.toInterfaces() = implementedInterfaces.map { int -> "${int.first.name}${int.second?.let{ by -> " by ${by.name}()" } ?: ""}" }.toSingleString(", ")
+    private fun Clazz.toBodyStart() = if (children.isNotEmpty()) " {" else ""
+    private fun Clazz.toBody() = if (children.isNotEmpty()) uniqueChildren.map { child -> toCode(child,4) }.toMultiString() else removeLine
+    private fun Clazz.toBodyEnd() = if (children.isNotEmpty()) "}" else removeLine
 
     private fun TypedValue.Value?.toCode() = when(this){
         is TypedValue.Value.CodeValue -> toCode(value)
@@ -129,12 +193,17 @@ class WriterCore {
         return filter { it.isNotBlank() }.joinToString("\n") { transform(it) }
     }
 
-    private fun String.indent(indent: Int = 0): String {
-        val lines = lines()
-        return lines.joinToString("") { "${(0..indent).joinToString { " " }}${it.trimIndent()}" }
+    private fun List<String>.toSingleString(separator: String = "", transform: (String) -> String = { it }): String {
+        if (isEmpty()) return removeLine
+        return filter { it.isNotBlank() }.joinToString(separator) { transform(it) }
     }
 
-    private operator fun Int.invoke() = (0..this).joinToString("") { " " }
+    private fun String.indent(indent: Int = 0): String {
+        val lines = lines()
+        return lines.joinToString("") { "${(0..indent).joinToString { "I" }}${it.trimIndent()}" }
+    }
+
+    private operator fun Int.invoke(more: Int = 0) = (0 until this + more).joinToString("") { " " }
 
     private fun String.removeWhitespace(): String =
         trimMargin()

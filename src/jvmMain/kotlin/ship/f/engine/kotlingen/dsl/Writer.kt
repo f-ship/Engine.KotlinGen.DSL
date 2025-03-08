@@ -2,6 +2,7 @@ package ship.f.engine.kotlingen.dsl
 
 import ship.f.engine.kotlingen.dsl.invoke
 import ship.f.engine.kotlingen.dsl.types.Clazz
+import ship.f.engine.kotlingen.dsl.types.InfixDelegate
 import ship.f.engine.kotlingen.dsl.types.util.KType
 
 fun main() {
@@ -81,16 +82,17 @@ fun main() {
         }
         space()
         val baseClass = add Class "exampleBaseClass" { }
+        val delegateClass = add Class "exampleDelegateClass" { }
         add Class "exampleClass" { }
         add Annotation_Class "exampleAnnotationClass" { }
         add Sealed_Class "exampleSealedClass" { }
         add Data_Class "exampleDataClass" { }
 
         val baseInterface = add Interface "exampleInterface" { }
-        add Class "exampleClass" withTypes listOf() constructor listOf(
-            "val2"(v<String>()),
-            "val3"(v<String>()),
-        ) extends baseClass by baseInterface implements baseInterface body {
+        add Class "exampleClass" withTypes listOf(t<String>(KType("S : String")),t<Int>()) constructor listOf(
+            "val2"(t<String>(KType("S"))),
+            "val3"(t<String>()),
+        ) extends baseClass.withTypes(listOf(t<String>(KType("S")),t<Int>())) implements baseInterface by delegateClass body {
             add Val "exampleClassGetterVal"(t<Int>()) getter v {
                 v<Int>("1")
             }
@@ -143,26 +145,26 @@ fun main() {
         }
 
         If(v<Boolean>()) {
-            v<String>()
+            v<Unit>()
         }
 
         add Val "if1"(t<String>()) assign If(v<Boolean>(""""A" == exampleVal""")) {
-            v<String>()
-        }.ElseIf(v<Boolean>()) {
-            v<String>()
+            v<String>(""""AAA"""")
+        }.ElseIf(v<Boolean>(""""B" == exampleVal""")) {
+            v<String>(""""BBB"""")
         }.Else {
+            v<String>(""""CCC"""")
+        }
+
+        For("""i in 1..10""") {
             v<String>()
         }
 
-        For(v<Boolean>()) {
+        While(v<Boolean>(""""W" == exampleVal""")) {
             v<String>()
         }
 
-        While(v<Boolean>()) {
-            v<String>()
-        }
-
-        DoWhile(v<Boolean>()) {
+        DoWhile(v<Boolean>(""""D" == exampleVal""")) {
             v<String>()
         }
     }

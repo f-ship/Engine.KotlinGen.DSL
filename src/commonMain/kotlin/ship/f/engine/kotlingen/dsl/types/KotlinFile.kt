@@ -8,9 +8,17 @@ import ship.f.engine.kotlingen.dsl.types.TypedValue.Value.CodeValue
 import ship.f.engine.kotlingen.dsl.types.util.KType
 import kotlin.uuid.ExperimentalUuidApi
 
+interface Infix {
+    infix fun Infix.a(i: String)
+}
+
+class InfixDelegate: Infix {
+    override infix fun Infix.a(i: String) { }
+}
+
 @OptIn(ExperimentalUuidApi::class)
 @Suppress("FunctionName")
-abstract class KotlinFile : Container() {
+abstract class KotlinFile(override var children: List<Code> = listOf()) : Container() {
     private var shouldShowChild = true
     var block: EntireFile.() -> Unit = {
         println("not implemented")
@@ -110,35 +118,40 @@ abstract class KotlinFile : Container() {
         noinline block: IfBranch<R>.() -> TypedValue<R>
     ): IfBranch<R> {
         return IfBranch(
-            statement = "if",
-            returnType = v<R>(),
-            statementTypedString = arg,
-            ifBlock = block,
+            returnValue = v<R>(),
+            statement = arg,
+            block = block,
         )
     }
 
-    inline fun <reified R> KotlinFile.For(
-        arg: TypedValue<Boolean>,
-        block: For.() -> TypedValue<R>
+    fun KotlinFile.For(
+        arg: String,
+        block: For.() -> Unit
     ): For {
-        val f = For(name = "")
-        return f
+        return For(
+            statement = arg,
+            block = block,
+        ).also { addChild(it) }
     }
 
-    inline fun <reified R> KotlinFile.While(
+    fun KotlinFile.While(
         arg: TypedValue<Boolean>,
-        block: While.() -> TypedValue<R>
+        block: While.() -> Unit,
     ): While {
-        val w = While(statement = "")
-        return w
+        return While(
+            statement = arg,
+            block = block,
+        ).also { addChild(it) }
     }
 
-    inline fun <reified R> KotlinFile.DoWhile(
+    fun KotlinFile.DoWhile(
         arg: TypedValue<Boolean>,
-        block: While.() -> TypedValue<R>
-    ): While {
-        val w = While(statement = "")
-        return w
+        block: DoWhile.() -> Unit,
+    ): DoWhile {
+        return DoWhile(
+            statement = arg,
+            block = block,
+        ).also { addChild(it) }
     }
 
     // Used for complex types like List<String>
@@ -181,7 +194,11 @@ abstract class KotlinFile : Container() {
         ).also { addChild(it) }
 
     infix fun <T> Val<T>.getter(t: TypedBlock<T>) =
-        AssignedVal(name = name, getter = t.copy(definition = "getter"), id = id).also { addChild(it) }
+        AssignedVal(
+            name = name,
+            getter = t.copy(definition = "getter"),
+            id = id
+        ).also { addChild(it) }
 
     infix fun Val<Clazz>.new(clazz: Clazz) = Val<Clazz>(name = clazz.name)
     infix fun Val<Clazz>.withTypes(types: List<Bundle<*, *>>) = this
@@ -203,12 +220,26 @@ abstract class KotlinFile : Container() {
         Var(name = name, setter = t.copy(definition = "setter"), id = id).also { addChild(it) }
 
     // Class
-    infix fun Clazz.withTypes(types: List<Bundle<Any, Any>>) = this
-    infix fun Clazz.constructor(args: List<Bundle<out Any, out Any>>) = this
-    infix fun Clazz.extends(clazz: Clazz) = this
-    infix fun Clazz.implements(int: Interface) = this
-    infix fun Clazz.by(int: Interface) = this
-    infix fun Clazz.body(block: Clazz.() -> Unit) = this.copy(block = block).also { addChild(it) }
+    infix fun Clazz.withTypes(types: List<TypedValue<*>>) =
+        this.copy(typeArgs = types, id = id).also { addChild(it) }
+
+    infix fun Clazz.constructor(args: List<Bundle<out Any, out Any>>) =
+        this.copy(args = args, id = id).also { addChild(it) }
+
+    infix fun Clazz.extends(clazz: Clazz) = this.copy(superClass = clazz, id = id).also { addChild(it) }
+    infix fun Clazz.implements(int: Interface) =
+        this.copy(implementedInterfaces = implementedInterfaces + listOf(Pair(int, null)), id = id)
+            .also { addChild(it) }
+
+    infix fun Clazz.by(clazz: Clazz) = this.copy(
+        implementedInterfaces = implementedInterfaces.subList(
+            fromIndex = 0,
+            toIndex = implementedInterfaces.lastIndex
+        ) + Pair(implementedInterfaces.last().first, clazz),
+        id = id,
+    ).also { addChild(it) }
+
+    infix fun Clazz.body(block: Clazz.() -> Unit) = this.copy(block = block, id = id).also { addChild(it) }
 
     // Fun
     infix fun <R> Fun<R>.withTypes(types: List<Bundle<out Any, Any>>) = this
@@ -219,14 +250,13 @@ abstract class KotlinFile : Container() {
     // IfBranch
     inline fun <reified R> IfBranch<R>.ElseIf(
         statement: TypedValue<Boolean>,
-        noinline block: IfBranch<R>.() -> TypedValue<R>
-    ): IfBranch<R> {
-        return IfBranch(
-            statement = "elseif",
-            returnType = v<R>(), // Need to execute block
-            statementTypedString = statement,
-            ifBlock = block,
-            ifBlocks = ifBlocks.plus(this),
+        noinline block: ElseIfBranch<R>.() -> TypedValue<R>
+    ): ElseIfBranch<R> {
+        return ElseIfBranch(
+            returnValue = v<R>(), // Need to execute block
+            statement = statement,
+            block = block,
+            previous = this,
         )
     }
 
@@ -234,10 +264,19 @@ abstract class KotlinFile : Container() {
         noinline block: ElseBranch<R>.() -> TypedValue<R>
     ): ElseBranch<R> {
         return ElseBranch(
-            name = "else",
-            returnType = v<R>(),
-            elseBlock = block,
-            ifBlocks = ifBlocks.plus(this),
+            returnValue = v<R>(),
+            block = block,
+            previous = this,
+        )
+    }
+
+    inline fun <reified R> ElseIfBranch<R>.Else(
+        noinline block: ElseBranch<R>.() -> TypedValue<R>
+    ): ElseBranch<R> {
+        return ElseBranch(
+            returnValue = v<R>(), // Need to execute block
+            block = block,
+            previous = this,
         )
     }
 }

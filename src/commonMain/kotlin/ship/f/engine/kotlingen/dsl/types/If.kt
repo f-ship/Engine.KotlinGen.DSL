@@ -1,5 +1,11 @@
 package ship.f.engine.kotlingen.dsl.types
 
-sealed class If {
+import ship.f.engine.kotlingen.dsl.Child
+
+sealed class If : Container(), Child {
+
+}
+
+sealed class Else : Container(), Child {
 
 }

@@ -3,7 +3,7 @@ package ship.f.engine.kotlingen.dsl.types
 import kotlin.uuid.ExperimentalUuidApi
 
 abstract class Container : Code() {
-    var children: List<Code> = listOf()
+    abstract var children: List<Code>
     @OptIn(ExperimentalUuidApi::class)
     val uniqueChildren
         get() = children

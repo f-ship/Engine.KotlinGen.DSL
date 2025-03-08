@@ -6,6 +6,7 @@ import kotlin.uuid.Uuid
 data class EntireFile @OptIn(ExperimentalUuidApi::class) constructor(
     val names: String,
     override val id: Uuid = Uuid.random(),
-) : KotlinFile() {
+    override var children: List<Code> = listOf(),
+) : KotlinFile(), Infix by InfixDelegate() {
 
 }

@@ -10,10 +10,18 @@ import kotlin.uuid.Uuid
 
 data class Clazz @OptIn(ExperimentalUuidApi::class) constructor(
     override val name: String,
+    val isData: Boolean = false,
+    val isSealed: Boolean = false,
+    val isOpen: Boolean = false,
+    val visibility: Visibility = Visibility.Unspecified,
     val block: Clazz.() -> Unit = { }, //May not make sense
+    val typeArgs: List<TypedValue<*>> = listOf(),
     val args: List<Bundle<out Any, out Any>> = listOf(),
     val definition: String = "{",
+    val superClass: Clazz? = null,
+    val implementedInterfaces: List<Pair<Interface, Clazz?>> = listOf(),
     override val id: Uuid = Uuid.random(),
+    override var children: List<Code> = listOf(),
 ) : Container(), Child {
     private var shouldShowChild = true
 

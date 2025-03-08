@@ -7,6 +7,7 @@ import kotlin.uuid.Uuid
 data class Block @OptIn(ExperimentalUuidApi::class) constructor(
     override val name: String,
     override val id: Uuid = Uuid.random(),
-) : Code(), Child {
+    override var children: List<Code> = listOf(),
+) : Container(), Child {
 
 }

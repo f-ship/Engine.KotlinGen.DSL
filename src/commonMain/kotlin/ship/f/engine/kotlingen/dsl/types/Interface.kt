@@ -5,8 +5,10 @@ import kotlin.uuid.ExperimentalUuidApi
 import kotlin.uuid.Uuid
 
 data class Interface @OptIn(ExperimentalUuidApi::class) constructor(
+    val typeArgs: List<TypedValue<*>> = listOf(),
     override val name: String,
     override val id: Uuid = Uuid.random(),
-) : Code(), Child {
+    override var children: List<Code> = listOf(),
+) : Container(), Child {
 
 }

@@ -13,4 +13,5 @@ data class Val<T : Any?> @OptIn(ExperimentalUuidApi::class) constructor(
     val getter: TypedBlock<T>? = null,
     val delegate: TypedBlock<T>? = null,
     override val id: Uuid = Uuid.random(),
+    override var children: List<Code> = listOf(),
 ) : Value<T>(), Child
