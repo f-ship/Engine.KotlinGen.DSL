@@ -6,7 +6,7 @@ import kotlin.uuid.Uuid
 
 data class When<T,R> @OptIn(ExperimentalUuidApi::class) constructor(
     override val name: String,
-    val block: When<T,R>.(TypedValue<T>) -> TypedValue<R>,
+    val block: When<T,R>.(T) -> R,
     override val id: Uuid = Uuid.random(),
     override var children: MutableList<Code> = mutableListOf(),
 ) : Container(), Child {

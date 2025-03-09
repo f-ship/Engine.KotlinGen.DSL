@@ -88,10 +88,18 @@ fun main() {
         add Data_Class "exampleDataClass" { }
 
         val baseInterface = add Interface "exampleInterface" { }
-        add Class "exampleClass" withTypes listOf(t<String>(KType("S : String")),t<Int>()) constructor listOf(
+        add Class "exampleClass" withTypes listOf(
+            t<String>(KType("S : String")),
+            t<Int>()
+        ) constructor listOf(
             "val2"(t<String>(KType("S"))),
             "val3"(t<String>()),
-        ) extends baseClass.withTypes(listOf(t<String>(KType("S")),t<Int>())) implements baseInterface by delegateClass body {
+        ) extends baseClass.withTypes(
+            listOf(
+                t<String>(KType("S")),
+                t<Int>()
+            )
+        ) implements baseInterface by delegateClass body {
             add Val "exampleClassGetterVal"(t<Int>()) getter v {
                 v<Int>("1")
             }
@@ -125,11 +133,11 @@ fun main() {
             "val4"(v<Int>()),
         )
 
-        When {
-            "branch1" {
-                v<String>()
-            }
-        }
+//        When {
+//            "branch1" {
+//                v<String>()
+//            }
+//        }
 
 //        add Val "when1"(t<String>()) assign When(v<String>("hello")) {
 //            "branch1" {

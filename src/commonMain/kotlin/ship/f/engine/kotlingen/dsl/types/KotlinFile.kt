@@ -166,11 +166,15 @@ abstract class KotlinFile(
 
     fun <T, R> KotlinFile.When(
         arg: TypedValue<T>,
-        block: When<T,R>.(TypedValue<T>) -> TypedValue<R>
+        block: When<T,R>.(T) -> R
     ): When<T,R> = When(name = "When", block = block)
 
-    fun <R> KotlinFile.When(block: When<Unit,R>.(TypedValue<Unit>) -> TypedValue<R>): When<Unit,R> =
+    fun <R> KotlinFile.When1(block: When<Unit,R>.(Unit) -> R): When<Unit,R> =
         When(name = "When", block = block)
+
+//    fun <T,R> KotlinFile.When(bundle: Bundle<When<TypedValue<T>,TypedValue<R>>.(TypedValue<T>) -> TypedValue<R>, Any>){
+//        When(name = "When", block = bundle.block)
+//    }
 
     inline fun <reified R> KotlinFile.If(
         arg: TypedValue<Boolean>,

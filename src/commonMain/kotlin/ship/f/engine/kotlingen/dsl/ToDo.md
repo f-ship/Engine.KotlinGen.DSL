@@ -31,7 +31,17 @@ Complete WriterCore for all currently defined methods
         Definition 
                 Visibility
                 Sealed/Data
-        Block Methods
+        Block Methods POSTPONE TO after ALPHA-1
+
+----------------------------------------------------------------------------------------------------
+Work on WriterCore
+1) Write Instance definition
+2) Write Object definition
+3) Write Fun definition
+4) Write Enum definition
+5) Write Lambda definition
+6) Write List definition
+7) Write Annotation definition
 
 ----------------------------------------------------------------------------------------------------
 
@@ -40,26 +50,19 @@ Complete WriterCore for all currently defined methods
 ----------------------------------------------------------------------------------------------------
 ALPHA
 1) Experiment with Delegation
-2) Complete Object Definition
-3) Complete When Definition
-4) Complete Fun Definition
-5) Complete When Block Methods
-6) Complete Fun Block Methods
-7) Complete While/DoWhile Block Methods
-8) Complete If Block Methods
-9) Refactor the Writer
-10) Code Blocks
-11) Include project builds for the project
+        Implement all non inline methods using delegation
+        Upgrade bundle to remove the need for inlining
+        Use null type on If to eliminate the need for inlining
+
+2) Complete When Definition
+3) Refactor the Writer
+4) Include project builds for the project
 
 BETA
 More types
-1) Enums
-2) Lambdas
-3) Lists
-4) Annotations
-5) Handle Overrides, Suspend
-6) Stricter Class and Fun definitions
-7) Typed lists for args, typeArgs and Calls
+1) Handle Overrides, Suspend
+2) Stricter Class and Fun definitions
+3) Typed lists for args, typeArgs and Calls
 
 V1
 Create a system for automatic imports using declared types POSTPONE for V1
