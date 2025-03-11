@@ -16,7 +16,7 @@ data class Clazz @OptIn(ExperimentalUuidApi::class) constructor(
     val visibility: Visibility = Visibility.Unspecified,
     val block: Clazz.() -> Unit = { }, //May not make sense
     val typeArgs: List<TypedValue<*>> = listOf(),
-    val args: List<Bundle<out Any, out Any>> = listOf(),
+    val args: List<Bundle<out Any, out Any, out Any>> = listOf(),
     val definition: String = "{",
     val superClass: Clazz? = null,
     val implementedInterfaces: List<Pair<Interface, Clazz?>> = listOf(),
@@ -39,13 +39,13 @@ data class Clazz @OptIn(ExperimentalUuidApi::class) constructor(
     }
 
     @OptIn(ExperimentalUuidApi::class)
-    infix fun <T : Any?> Clazz.Val(v: Bundle<Val<T>.() -> Unit, T>) = Val(name = v.name, type = v.type).also { addChild(it) }
+    infix fun <T : Any?> Clazz.Val(v: Bundle<Val<T>.() -> Unit, T, Unit>) = Val(name = v.name, type = v.type).also { addChild(it) }
     @OptIn(ExperimentalUuidApi::class)
-    infix fun <T : Any?> Clazz.Public_Val(v: Bundle<Val<T>.() -> Unit, T>) = Val(name = v.name, type = v.type, visibility = Public).also { addChild(it) }
+    infix fun <T : Any?> Clazz.Public_Val(v: Bundle<Val<T>.() -> Unit, T, Unit>) = Val(name = v.name, type = v.type, visibility = Public).also { addChild(it) }
     @OptIn(ExperimentalUuidApi::class)
-    infix fun <T : Any?> Clazz.Internal_Val(v: Bundle<Val<T>.() -> Unit, T>) = Val(name = v.name, type = v.type, visibility = Internal).also { addChild(it) }
+    infix fun <T : Any?> Clazz.Internal_Val(v: Bundle<Val<T>.() -> Unit, T, Unit>) = Val(name = v.name, type = v.type, visibility = Internal).also { addChild(it) }
     @OptIn(ExperimentalUuidApi::class)
-    infix fun <T : Any?> Clazz.Private_Val(v: Bundle<Val<T>.() -> Unit, T>) = Val(name = v.name, type = v.type, visibility = Private).also { addChild(it) }
+    infix fun <T : Any?> Clazz.Private_Val(v: Bundle<Val<T>.() -> Unit, T, Unit>) = Val(name = v.name, type = v.type, visibility = Private).also { addChild(it) }
 
     @OptIn(ExperimentalUuidApi::class)
     infix fun <T> Val<T>.getter(t: TypedBlock<T>) =

@@ -4,7 +4,8 @@ import ship.f.engine.kotlingen.dsl.Child
 import kotlin.uuid.ExperimentalUuidApi
 import kotlin.uuid.Uuid
 
-data class TypedValue<T : Any?> @OptIn(ExperimentalUuidApi::class) constructor(
+@OptIn(ExperimentalUuidApi::class)
+data class TypedValue<T : Any?>(
     val value: Value? = null,
     val code: Code? = null,
     val type: String? = null,

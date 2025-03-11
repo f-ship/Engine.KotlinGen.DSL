@@ -5,6 +5,7 @@ import ship.f.engine.kotlingen.dsl.types.Code.Visibility.Internal
 import ship.f.engine.kotlingen.dsl.types.Code.Visibility.Private
 import ship.f.engine.kotlingen.dsl.types.Code.Visibility.Public
 import ship.f.engine.kotlingen.dsl.types.TypedValue.Value.CodeValue
+import ship.f.engine.kotlingen.dsl.types.TypedValue.Value.StringValue
 import ship.f.engine.kotlingen.dsl.types.util.KType
 import kotlin.uuid.ExperimentalUuidApi
 
@@ -24,14 +25,14 @@ class TypeAliasDelegate(
 }
 
 interface ValInterface {
-    infix fun <T : Any?> Val(v: Bundle<Val<T>.() -> Unit, T>): Val<T>
-    infix fun <T : Any?> Public_Val(v: Bundle<Val<T>.() -> Unit, T>): Val<T>
-    infix fun <T : Any?> Internal_Val(v: Bundle<Val<T>.() -> Unit, T>): Val<T>
-    infix fun <T : Any?> Private_Val(v: Bundle<Val<T>.() -> Unit, T>): Val<T>
-    infix fun <T : Any?> Var(v: Bundle<Val<T>.() -> Unit, T>): Var<T>
-    infix fun <T : Any?> Public_Var(v: Bundle<Val<T>.() -> Unit, T>): Var<T>
-    infix fun <T : Any?> Internal_Var(v: Bundle<Val<T>.() -> Unit, T>): Var<T>
-    infix fun <T : Any?> Private_Var(v: Bundle<Val<T>.() -> Unit, T>): Var<T>
+    infix fun <T : Any?> Val(v: Bundle<Val<T>.() -> Unit, T, Unit>): Val<T>
+    infix fun <T : Any?> Public_Val(v: Bundle<Val<T>.() -> Unit, T, Unit>): Val<T>
+    infix fun <T : Any?> Internal_Val(v: Bundle<Val<T>.() -> Unit, T, Unit>): Val<T>
+    infix fun <T : Any?> Private_Val(v: Bundle<Val<T>.() -> Unit, T, Unit>): Val<T>
+    infix fun <T : Any?> Var(v: Bundle<Val<T>.() -> Unit, T, Unit>): Var<T>
+    infix fun <T : Any?> Public_Var(v: Bundle<Val<T>.() -> Unit, T, Unit>): Var<T>
+    infix fun <T : Any?> Internal_Var(v: Bundle<Val<T>.() -> Unit, T, Unit>): Var<T>
+    infix fun <T : Any?> Private_Var(v: Bundle<Val<T>.() -> Unit, T, Unit>): Var<T>
 }
 
 @OptIn(ExperimentalUuidApi::class)
@@ -39,38 +40,38 @@ class ValDelegate(
     val children: MutableList<Code> = mutableListOf(),
     val addChild: (Code) -> Unit = { code -> children.add(code) },
 ) : ValInterface {
-    override infix fun <T> Val(v: Bundle<Val<T>.() -> Unit, T>) =
+    override infix fun <T> Val(v: Bundle<Val<T>.() -> Unit, T, Unit>) =
         Val(name = v.name, type = v.type).also { addChild(it) }
 
-    override infix fun <T> Public_Val(v: Bundle<Val<T>.() -> Unit, T>) =
+    override infix fun <T> Public_Val(v: Bundle<Val<T>.() -> Unit, T, Unit>) =
         Val(name = v.name, type = v.type, visibility = Public).also { addChild(it) }
 
-    override infix fun <T> Internal_Val(v: Bundle<Val<T>.() -> Unit, T>) =
+    override infix fun <T> Internal_Val(v: Bundle<Val<T>.() -> Unit, T, Unit>) =
         Val(name = v.name, type = v.type, visibility = Internal).also { addChild(it) }
 
-    override infix fun <T> Private_Val(v: Bundle<Val<T>.() -> Unit, T>) =
+    override infix fun <T> Private_Val(v: Bundle<Val<T>.() -> Unit, T, Unit>) =
         Val(name = v.name, type = v.type, visibility = Private).also { addChild(it) }
 
-    override infix fun <T> Var(v: Bundle<Val<T>.() -> Unit, T>) =
+    override infix fun <T> Var(v: Bundle<Val<T>.() -> Unit, T, Unit>) =
         Var(name = v.name, type = v.type).also { addChild(it) }
 
-    override infix fun <T> Public_Var(v: Bundle<Val<T>.() -> Unit, T>) =
+    override infix fun <T> Public_Var(v: Bundle<Val<T>.() -> Unit, T, Unit>) =
         Var(name = v.name, type = v.type, visibility = Public).also { addChild(it) }
 
-    override infix fun <T> Internal_Var(v: Bundle<Val<T>.() -> Unit, T>) =
+    override infix fun <T> Internal_Var(v: Bundle<Val<T>.() -> Unit, T, Unit>) =
         Var(name = v.name, type = v.type, visibility = Internal).also { addChild(it) }
 
-    override infix fun <T> Private_Var(v: Bundle<Val<T>.() -> Unit, T>) =
+    override infix fun <T> Private_Var(v: Bundle<Val<T>.() -> Unit, T, Unit>) =
         Var(name = v.name, type = v.type, visibility = Private).also { addChild(it) }
 }
 
 interface BodyInterface {
-    infix fun Class(v: Bundle<Clazz, Any>): Clazz
+    infix fun Class(v: Bundle<Clazz, Any, Unit>): Clazz
     infix fun Class(name: String): Clazz
-    infix fun Annotation_Class(v: Bundle<Clazz, Any>): Clazz
-    infix fun Sealed_Class(v: Bundle<Clazz, Any>): Clazz
-    infix fun Data_Class(v: Bundle<Clazz, Any>): Clazz
-    infix fun Interface(v: Bundle<Interface, Any>): Interface
+    infix fun Annotation_Class(v: Bundle<Clazz, Any, Unit>): Clazz
+    infix fun Sealed_Class(v: Bundle<Clazz, Any, Unit>): Clazz
+    infix fun Data_Class(v: Bundle<Clazz, Any, Unit>): Clazz
+    infix fun Interface(v: Bundle<Interface, Any, Unit>): Interface
 }
 
 @OptIn(ExperimentalUuidApi::class)
@@ -78,22 +79,22 @@ class BodyDelegate(
     val children: MutableList<Code> = mutableListOf(),
     val addChild: (Code) -> Unit = { code -> children.add(code) },
 ) : BodyInterface {
-    override infix fun Class(v: Bundle<Clazz, Any>) =
+    override infix fun Class(v: Bundle<Clazz, Any, Unit>) =
         Clazz(name = v.name).also { addChild(it) }
 
     override infix fun Class(name: String) =
         Clazz(name = name).also { addChild(it) }
 
-    override infix fun Annotation_Class(v: Bundle<Clazz, Any>) =
+    override infix fun Annotation_Class(v: Bundle<Clazz, Any, Unit>) =
         Clazz(name = v.name).also { addChild(it) }
 
-    override infix fun Sealed_Class(v: Bundle<Clazz, Any>) =
+    override infix fun Sealed_Class(v: Bundle<Clazz, Any, Unit>) =
         Clazz(name = v.name).also { addChild(it) }
 
-    override infix fun Data_Class(v: Bundle<Clazz, Any>) =
+    override infix fun Data_Class(v: Bundle<Clazz, Any, Unit>) =
         Clazz(name = v.name).also { addChild(it) }
 
-    override infix fun Interface(v: Bundle<Interface, Any>) =
+    override infix fun Interface(v: Bundle<Interface, Any, Unit>) =
         Interface(name = v.name).also { addChild(it) }
 }
 
@@ -159,22 +160,48 @@ abstract class KotlinFile(
 
     val define get() = this.apply { children.add(Define()) }
 
-    infix fun <R> KotlinFile.Fun(v: Bundle<Val<R>.() -> Unit, R>) =
+    // Return type needs to be changed
+    infix fun <R> KotlinFile.Fun(v: Bundle<Val<R>.() -> Unit, R, Unit>) =
         Fun(name = v.name, returnType = v<Fun<R>>())
 
     infix fun KotlinFile.Fun(n: String) = Fun(name = n, returnType = v<Any>())
 
-    fun <T, R> KotlinFile.When(
-        arg: TypedValue<T>,
-        block: When<T,R>.(T) -> R
-    ): When<T,R> = When(name = "When", block = block)
+//    fun <T, R> KotlinFile.When(
+//        arg: TypedValue<T>,
+//        block: When<T, R>.(TypedValue<T>?) -> R
+//    ): When<T, R> = When(name = "When", arg = arg, block = block)
 
-    fun <R> KotlinFile.When1(block: When<Unit,R>.(Unit) -> R): When<Unit,R> =
-        When(name = "When", block = block)
+    operator fun <T, R> TypedArgValue<T>.invoke(block: When<T, R>.(TypedValue<T>?) -> WhenBranch<T,R>): When<T, R> =
+        When(
+            name = "When",
+            arg = toTypedValue(),
+            block = block,
+        )
 
-//    fun <T,R> KotlinFile.When(bundle: Bundle<When<TypedValue<T>,TypedValue<R>>.(TypedValue<T>) -> TypedValue<R>, Any>){
-//        When(name = "When", block = bundle.block)
+    infix fun <T, R> When(w: When<T, R>) {
+        addChild(w)
+    }
+
+    infix fun <R> KotlinFile.When(block: When<Unit, R>.(TypedValue<Unit>?) -> WhenBranch<Unit,R>): When<Unit, R> =
+        When(name = "When", block = block).also { addChild(it) }
+
+//    fun <T,R> KotlinFile.When(bundle: Bundle<When<TypedValue<T>,TypedValue<R>>,TypedValue<T>, TypedValue<R>>){
+//        When(name = "When", block = checkNotNull(bundle.block){ "Whoops why is bundle block null?" } )
 //    }
+
+    private fun <T> TypedArgValue<T>.toTypedValue() = TypedValue<T>(
+        value = when (value) {
+            is TypedArgValue.Value.CodeValue -> CodeValue(value.value)
+            is TypedArgValue.Value.StringValue -> StringValue(value.value)
+            null -> null
+        },
+        code = code,
+        type = type,
+        import = import,
+        nullable = nullable,
+        name = name,
+        id = id,
+    )
 
     inline fun <reified R> KotlinFile.If(
         arg: TypedValue<Boolean>,
@@ -229,11 +256,16 @@ abstract class KotlinFile(
     // Used to create a typed value, the type will not actually get used.
     inline fun <reified T : Any?> v(string: String? = null): TypedValue<T> = TypedValue(
         type = T::class.simpleName,
-        value = string?.let { TypedValue.Value.StringValue(it) }
+        value = string?.let { StringValue(it) }
     )
 
     inline fun <reified T : Any?> v(noinline block: TypedBlock<T>.() -> TypedValue<T>): TypedBlock<T> =
         TypedBlock(block = block)
+
+    inline fun <reified T : Any?> p(string: String? = null): TypedArgValue<T> = TypedArgValue(
+        type = T::class.simpleName,
+        value = string?.let { TypedArgValue.Value.StringValue(it) }
+    )
 
 //    // TypeAlias
 //    infix fun <T, R> TypeAlias<T>.assign(t: TypedValue<R>) =
@@ -264,12 +296,12 @@ abstract class KotlinFile(
         ).also { addChild(it) }
 
     infix fun Val<Clazz>.new(clazz: Clazz) = Val<Clazz>(name = clazz.name)
-    infix fun Val<Clazz>.withTypes(types: List<Bundle<*, *>>) = this
-    infix fun Val<Clazz>.constructor(types: List<Bundle<*, *>>) = this
+    infix fun Val<Clazz>.withTypes(types: List<Bundle<*, *, *>>) = this
+    infix fun Val<Clazz>.constructor(types: List<Bundle<*, *, *>>) = this
 
     // AssignedVal
-    infix fun <R> AssignedVal<R>.withTypes(types: List<Bundle<out Any, Any>>) = this
-    infix fun <R> AssignedVal<R>.calls(args: List<Bundle<out Any, out Any>>) = this
+    infix fun <R> AssignedVal<R>.withTypes(types: List<Bundle<out Any, Any, Any>>) = this
+    infix fun <R> AssignedVal<R>.calls(args: List<Bundle<out Any, out Any, out Any>>) = this
 
 
     // Var
@@ -290,7 +322,7 @@ abstract class KotlinFile(
     infix fun Clazz.withTypes(types: List<TypedValue<*>>) =
         this.copy(typeArgs = types, id = id).also { addChild(it) }
 
-    infix fun Clazz.constructor(args: List<Bundle<out Any, out Any>>) =
+    infix fun Clazz.constructor(args: List<Bundle<out Any, out Any, out Any>>) =
         this.copy(args = args, id = id).also { addChild(it) }
 
     infix fun Clazz.extends(clazz: Clazz) =
@@ -312,8 +344,8 @@ abstract class KotlinFile(
         this.copy(block = block, id = id).also { addChild(it) }
 
     // Fun
-    infix fun <R> Fun<R>.withTypes(types: List<Bundle<out Any, Any>>) = this
-    infix fun <R> Fun<R>.constructor(args: List<Bundle<out Any, out Any>>) = this
+    infix fun <R> Fun<R>.withTypes(types: List<Bundle<out Any, Any, out Any>>) = this
+    infix fun <R> Fun<R>.constructor(args: List<Bundle<out Any, out Any, out Any>>) = this
     infix fun <R, N> Fun<R>.returns(t: TypedValue<N>) = Fun(name = "", returnType = t)
     infix fun <R> Fun<R>.block(block: Fun<R>.() -> Unit) = this
 

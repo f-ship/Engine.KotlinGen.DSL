@@ -7,7 +7,7 @@ data class PartialFile @OptIn(ExperimentalUuidApi::class) constructor(
     override val name: String,
     override val id: Uuid = Uuid.random(),
     override var children: MutableList<Code> = mutableListOf(),
-    val block: PartialFile.() -> Unit,
+    val block: (PartialFile.(Any) -> Unit)?,
 ) : KotlinFile() {
 
 }

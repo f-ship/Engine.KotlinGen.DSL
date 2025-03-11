@@ -34,14 +34,19 @@ Complete WriterCore for all currently defined methods
         Block Methods POSTPONE TO after ALPHA-1
 
 ----------------------------------------------------------------------------------------------------
+1) Create when branch DONE
+2) Write when definition DONE
+3) Create TypedValue sealed class
+4) Create TypedValue state ext
+----------------------------------------------------------------------------------------------------
 Work on WriterCore
-1) Write Instance definition
-2) Write Object definition
-3) Write Fun definition
-4) Write Enum definition
-5) Write Lambda definition
-6) Write List definition
-7) Write Annotation definition
+1) MONDAY 17 Write Instance definition
+2) TUESDAY 18 Write Object definition
+3) WEDNESDAY 19 Write Fun definition
+4) THURSDAY 20 Write Enum definition
+5) FRIDAY 21 Write Lambda definition
+6) SATURDAY 22 Write List definition
+7) SUNDAY 23 Write Annotation definition
 
 ----------------------------------------------------------------------------------------------------
 

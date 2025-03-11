@@ -17,6 +17,8 @@ import ship.f.engine.kotlingen.dsl.types.TypedBlock
 import ship.f.engine.kotlingen.dsl.types.TypedValue
 import ship.f.engine.kotlingen.dsl.types.Val
 import ship.f.engine.kotlingen.dsl.types.Var
+import ship.f.engine.kotlingen.dsl.types.When
+import ship.f.engine.kotlingen.dsl.types.WhenBranch
 import ship.f.engine.kotlingen.dsl.types.While
 import kotlin.uuid.ExperimentalUuidApi
 
@@ -157,6 +159,27 @@ class WriterCore {
                 """
             }
 
+            is When<*,*> -> code.copy().apply {
+                execute()
+            }.let {
+                """
+                |${indent()}when${it.arg?.value?.toCode()?.let { arg -> "($arg)" } ?: ""} {
+                |${indent()}${it.uniqueChildren.map { child -> toCode(child,4) }.toMultiString()}
+                |${indent()}}
+                """
+            }
+
+            is WhenBranch<*, *> -> code.copy().apply {
+                execute()
+            }.let {
+                """
+                |${indent()}${it.name} -> {
+                |${indent()}${it.uniqueChildren.map { child -> toCode(child,4) }.toMultiString()}
+                |${indent(4)}${it.returnValue?.value?.toCode() ?: removeLine}
+                |${indent()}}
+                """
+            }
+
             else -> {
                 "partial file"
             }
@@ -179,7 +202,7 @@ class WriterCore {
         null -> ""
     }
 
-    private fun List<Bundle<out Any, out Any>>.toCode() = joinToString(", ") { arg -> "${arg.name}${arg.type?.type.toType()}" }
+    private fun List<Bundle<out Any, out Any, out Any>>.toCode() = joinToString(", ") { arg -> "${arg.name}${arg.type?.type.toType()}" }
     private fun TypedValue<*>?.toCode() = this?.let { it.type ?: "" }
 
     private fun List<String>.toMultiString(transform: (String) -> String = { it }): String {

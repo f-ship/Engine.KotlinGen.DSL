@@ -7,7 +7,7 @@ import kotlin.uuid.ExperimentalUuidApi
 @OptIn(ExperimentalUuidApi::class)
 fun EntireFile.save(): String {
     val cache = copy()
-    cache.block()
+    block?.let { cache.it(this) }
     return WriterCore().toCode(cache).apply { println(this) }
 }
 

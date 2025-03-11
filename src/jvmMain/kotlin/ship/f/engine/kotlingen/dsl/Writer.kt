@@ -132,12 +132,48 @@ fun main() {
             "val3"(v<String>()),
             "val4"(v<Int>()),
         )
-
-//        When {
+        space()
+        add When(p<String>("hello")) {
+            "branchArg1" {
+                add Val "val1"(t<String>())
+                v<String>(""""A"""")
+            }
+            "branchArg2" {
+                add Val "val2"(t<String>())
+                v<String>(""""B"""")
+            }
+            "branchArg2" {
+                add Val "val3"(t<String>())
+                v<String>(""""C"""")
+            }
+        }
+        space()
+        add When {
+            "branchArgLess1" {
+                add Val "val1"(t<String>())
+                v<String>(""""A"""")
+            }
+            "branchArgLess2" {
+                add Val "val2"(t<String>())
+                v<String>(""""B"""")
+            }
+            "branchArgLess2" {
+                add Val "val3"(t<String>())
+                v<String>(""""C"""")
+            }
+        }
+        space()
+//        add When ((p<String>()) {
 //            "branch1" {
 //                v<String>()
 //            }
-//        }
+//            "branch2" {
+//                v<String>()
+//            }
+//            "branch3" {
+//                v<String>()
+//            }
+//        })
 
 //        add Val "when1"(t<String>()) assign When(v<String>("hello")) {
 //            "branch1" {
@@ -152,6 +188,8 @@ fun main() {
 //        }
 
         If(v<Boolean>()) {
+            v<Unit>()
+        }.ElseIf(v<Boolean>()) {
             v<Unit>()
         }
 
