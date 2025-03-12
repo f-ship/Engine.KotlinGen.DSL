@@ -1,6 +1,8 @@
 package ship.f.engine.kotlingen.dsl.types
 
 import ship.f.engine.kotlingen.dsl.Child
+import ship.f.engine.kotlingen.dsl.implementations.ValDelegate
+import ship.f.engine.kotlingen.dsl.implementations.ValInterface
 import kotlin.uuid.ExperimentalUuidApi
 import kotlin.uuid.Uuid
 
@@ -9,21 +11,14 @@ data class WhenBranch<T, R>(
     override val name: String = "WhenBranch",
     override val id: Uuid = Uuid.random(),
     override val children: MutableList<Code> = mutableListOf(),
-    val arg: TypedValue<T>? = null,
+    val arg: ValTypedValue<T>? = null,
     val addChild: (Code) -> Unit = { code -> children.add(code) },
-    val block: WhenBranch<T, R>.(TypedValue<T>?) -> TypedValue<R>,
-    var returnValue: TypedValue<R>? = null,
+    val block: WhenBranch<T, R>.(ValTypedValue<T>?) -> ValTypedValue<R>,
+    var returnValue: ValTypedValue<R>? = null,
 ) : Container(), Child,
     ValInterface by ValDelegate(children, addChild)  {
-    val add get() = this
-
-    val define get() = this.apply { children.add(Define()) }
-
-    inline fun <reified T : Any?> p(string: String? = null): TypedArgValue<T> = TypedArgValue(
-        type = T::class.simpleName,
-        value = string?.let { TypedArgValue.Value.StringValue(it) }
-    )
-
+    override val add get() = this
+    override val define get() = this.apply { children.add(Define()) }
     fun execute(){
         returnValue = block(this, arg)
     }

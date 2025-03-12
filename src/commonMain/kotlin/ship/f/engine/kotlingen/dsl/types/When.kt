@@ -6,27 +6,20 @@ import kotlin.uuid.Uuid
 @OptIn(ExperimentalUuidApi::class)
 data class When<T,R>(
     override val name: String,
-    val arg: TypedValue<T>? = null,
-    val block: When<T,R>.(TypedValue<T>?) -> WhenBranch<T,R>,
+    val arg: ValTypedValue<T>? = null,
+    val block: When<T,R>.(ValTypedValue<T>?) -> WhenBranch<T,R>,
+    val returnType: ValTypedValue<R>? = null,
     override val id: Uuid = Uuid.random(),
     override var children: MutableList<Code> = mutableListOf(),
 ) : Container(), Child {
-    val add get() = this
-
-    val define get() = this.apply { children.add(Define()) }
+    override val add get() = this
+    override val define get() = this.apply { children.add(Define()) }
 
     fun execute() {
         block(this, arg)
     }
 
-//    operator fun String.invoke(block: When<T,R>.(T) -> R): Bundle<When<T,R>, T, R> {
-//        TODO()
-//    }
-
-    operator fun String.invoke(block: WhenBranch<T,R>.(TypedValue<T>?) -> TypedValue<R>): WhenBranch<T,R> {
+    operator fun String.invoke(block: WhenBranch<T,R>.(ValTypedValue<T>?) -> ValTypedValue<R>): WhenBranch<T,R> {
         return WhenBranch(name = this, block = block, arg = arg).also { children.add(it) }
     }
-//    operator fun String.invoke(block: When<T,R>.(T) -> R): String {
-//        TODO()
-//    }
 }

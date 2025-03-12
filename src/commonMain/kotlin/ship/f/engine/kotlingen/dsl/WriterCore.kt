@@ -15,6 +15,7 @@ import ship.f.engine.kotlingen.dsl.types.Space
 import ship.f.engine.kotlingen.dsl.types.TypeAlias
 import ship.f.engine.kotlingen.dsl.types.TypedBlock
 import ship.f.engine.kotlingen.dsl.types.TypedValue
+import ship.f.engine.kotlingen.dsl.types.ValTypedValue
 import ship.f.engine.kotlingen.dsl.types.Val
 import ship.f.engine.kotlingen.dsl.types.Var
 import ship.f.engine.kotlingen.dsl.types.When
@@ -28,11 +29,7 @@ class WriterCore {
         return when (code) {
             is EntireFile ->
                 """
-                |${
-                    code.uniqueChildren
-                        .map { toCode(it) }
-                        .toMultiString()
-                }
+                |${code.uniqueChildren.map { toCode(it) }.toMultiString()}
                 """
 
             is Package ->
@@ -102,7 +99,7 @@ class WriterCore {
                 """
                 |${indent()}if(${it.statement.value.toCode()}) {
                 |${indent()}${it.uniqueChildren.map { child -> toCode(child,4) }.toMultiString()}
-                |${indent()}    ${it.returnValue.value.toCode()}
+                |${indent()}    ${it.returnValue?.value?.toCode()}
                 |${indent()}}
                 """
             }
@@ -113,7 +110,7 @@ class WriterCore {
                 """
                 |${indent()}${toCode(it.previous)} else if(${it.statement.value.toCode()}) {
                 |${indent()}${it.uniqueChildren.map { child -> toCode(child,4) }.toMultiString()}
-                |${indent()}    ${it.returnValue.value.toCode()}
+                |${indent()}    ${it.returnValue?.value?.toCode()}
                 |${indent()}}
                 """
             }
@@ -124,7 +121,7 @@ class WriterCore {
                 """
                 |${indent()}${toCode(it.previous)} else {
                 |${indent()}${it.uniqueChildren.map { child -> toCode(child,4) }.toMultiString()}
-                |${indent(4)}${it.returnValue.value.toCode()}
+                |${indent(4)}${it.returnValue?.value?.toCode()}
                 |${indent()}}
                 """
             }
@@ -203,7 +200,7 @@ class WriterCore {
     }
 
     private fun List<Bundle<out Any, out Any, out Any>>.toCode() = joinToString(", ") { arg -> "${arg.name}${arg.type?.type.toType()}" }
-    private fun TypedValue<*>?.toCode() = this?.let { it.type ?: "" }
+    private fun ValTypedValue<*>?.toCode() = this?.let { it.type ?: "" }
 
     private fun List<String>.toMultiString(transform: (String) -> String = { it }): String {
         if (isEmpty()) return removeLine

@@ -4,11 +4,13 @@ import ship.f.engine.kotlingen.dsl.Child
 import kotlin.uuid.ExperimentalUuidApi
 import kotlin.uuid.Uuid
 
-data class Fun<R : Any?> @OptIn(ExperimentalUuidApi::class) constructor(
+@OptIn(ExperimentalUuidApi::class)
+data class Fun<R : Any?>(
     override val name: String,
-    val returnType: TypedValue<R>? = null,
+    val returnType: ValTypedValue<R>? = null,
     override val id: Uuid = Uuid.random(),
     override var children: MutableList<Code> = mutableListOf(),
 ) : Container(), Child {
-
+    override val add get() = this
+    override val define get() = this.apply { children.add(Define()) }
 }

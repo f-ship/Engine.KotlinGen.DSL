@@ -36,8 +36,8 @@ Complete WriterCore for all currently defined methods
 ----------------------------------------------------------------------------------------------------
 1) Create when branch DONE
 2) Write when definition DONE
-3) Create TypedValue sealed class
-4) Create TypedValue state ext
+3) Create TypedValue sealed class DONE
+4) Create TypedValue state ext DONE
 ----------------------------------------------------------------------------------------------------
 Work on WriterCore
 1) MONDAY 17 Write Instance definition

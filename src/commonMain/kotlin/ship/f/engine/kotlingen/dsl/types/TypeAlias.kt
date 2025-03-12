@@ -6,7 +6,7 @@ import kotlin.uuid.Uuid
 
 data class TypeAlias<T> @OptIn(ExperimentalUuidApi::class) constructor(
     override val name: String,
-    var type: TypedValue<T>? = null,
+    var type: ValTypedValue<T>? = null,
     var simpleType: String? = null,
     override val id: Uuid = Uuid.random(),
 ) : Code(), Child {

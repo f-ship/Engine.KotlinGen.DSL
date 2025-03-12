@@ -1,10 +1,10 @@
 package ship.f.engine.kotlingen.dsl.types
 
 import kotlin.uuid.ExperimentalUuidApi
-
+@OptIn(ExperimentalUuidApi::class)
 abstract class Container : Code() {
     abstract val children: MutableList<Code>
-    @OptIn(ExperimentalUuidApi::class)
+
     val uniqueChildren
         get() = children
             .reversed()
@@ -29,4 +29,7 @@ abstract class Container : Code() {
         }
         return newList
     }
+
+    abstract val add: Any
+    abstract val define: Any
 }

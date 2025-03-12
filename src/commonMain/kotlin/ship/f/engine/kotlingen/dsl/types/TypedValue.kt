@@ -5,15 +5,15 @@ import kotlin.uuid.ExperimentalUuidApi
 import kotlin.uuid.Uuid
 
 @OptIn(ExperimentalUuidApi::class)
-data class TypedValue<T : Any?>(
-    val value: Value? = null,
-    val code: Code? = null,
-    val type: String? = null,
-    val import: String? = null,
-    val nullable: Boolean = false,
-    override val name: String = "TypedValue",
-    override val id: Uuid = Uuid.random(),
-) : Code(), Child {
+sealed class TypedValue<T : Any?> : Code(), Child {
+    abstract val value: Value?
+    abstract val code: Code?
+    abstract val type: String?
+    abstract val import: String?
+    abstract val nullable: Boolean
+    abstract override val name: String
+    abstract override val id: Uuid
+
     sealed class Value {
         data class StringValue(val value: String) : Value()
         data class CodeValue(val value: Code) : Value()

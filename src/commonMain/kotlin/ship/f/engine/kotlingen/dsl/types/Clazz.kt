@@ -8,14 +8,15 @@ import ship.f.engine.kotlingen.dsl.types.Code.Visibility.Public
 import kotlin.uuid.ExperimentalUuidApi
 import kotlin.uuid.Uuid
 
-data class Clazz @OptIn(ExperimentalUuidApi::class) constructor(
+@OptIn(ExperimentalUuidApi::class)
+data class Clazz(
     override val name: String,
     val isData: Boolean = false,
     val isSealed: Boolean = false,
     val isOpen: Boolean = false,
     val visibility: Visibility = Visibility.Unspecified,
     val block: Clazz.() -> Unit = { }, //May not make sense
-    val typeArgs: List<TypedValue<*>> = listOf(),
+    val typeArgs: List<ValTypedValue<*>> = listOf(),
     val args: List<Bundle<out Any, out Any, out Any>> = listOf(),
     val definition: String = "{",
     val superClass: Clazz? = null,
@@ -24,16 +25,11 @@ data class Clazz @OptIn(ExperimentalUuidApi::class) constructor(
     override val children: MutableList<Code> = mutableListOf(),
 ) : Container(), Child {
 
-     val add
-        get() = this
-
-    val define
-        get() = this
-
+    override val add get() = this
+    override val define get() = this.apply { children.add(Define()) }
     fun execute(){
         block.invoke(this)
     }
-
     private fun addChild(child: Code) {
         children.add(child)
     }

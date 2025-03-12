@@ -1,6 +1,5 @@
 package ship.f.engine.kotlingen.dsl
 
-import ship.f.engine.kotlingen.dsl.invoke
 import ship.f.engine.kotlingen.dsl.types.Clazz
 import ship.f.engine.kotlingen.dsl.types.util.KType
 
@@ -133,7 +132,7 @@ fun main() {
             "val4"(v<Int>()),
         )
         space()
-        add When(p<String>("hello")) {
+        add When(wp<String>("hello")) {
             "branchArg1" {
                 add Val "val1"(t<String>())
                 v<String>(""""A"""")
@@ -163,29 +162,26 @@ fun main() {
             }
         }
         space()
-//        add When ((p<String>()) {
-//            "branch1" {
-//                v<String>()
-//            }
-//            "branch2" {
-//                v<String>()
-//            }
-//            "branch3" {
-//                v<String>()
-//            }
-//        })
-
-//        add Val "when1"(t<String>()) assign When(v<String>("hello")) {
-//            "branch1" {
-//                v<String>()
-//            }
-//        }
-//
-//        add Val "when2"(t<String>()) assign When {
-//            "branch1" {
-//                v<String>()
-//            }
-//        }
+        add Val "when1"(t<String>()) assignWhen (wp<String>("hello")) {
+            "branchArg1" {
+                add Val "val1"(t<String>())
+                v<String>(""""A"""")
+            }
+            "branchArg2" {
+                add Val "val2"(t<String>())
+                v<String>(""""B"""")
+            }
+            "branchArg2" {
+                add Val "val3"(t<String>())
+                v<String>(""""C"""")
+            }
+        }
+        space()
+        add Val "when2"(t<String>()) assign When {
+            "branch1" {
+                v<String>()
+            }
+        }
 
         If(v<Boolean>()) {
             v<Unit>()
