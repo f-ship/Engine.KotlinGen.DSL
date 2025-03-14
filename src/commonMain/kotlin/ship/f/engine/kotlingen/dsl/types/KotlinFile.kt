@@ -33,4 +33,5 @@ abstract class KotlinFile(
     MethodInterface by MethodDelegate(children, addChild) {
     override val add get() = this
     override val define get() = this.apply { children.add(Define()) }
+    override fun execute() = this
 }

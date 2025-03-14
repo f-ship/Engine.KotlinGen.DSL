@@ -8,6 +8,9 @@ plugins {
     alias(libs.plugins.androidLibrary)
 }
 
+group = "ship.f.engine.kotlingen"
+version = "0.0.1"
+
 kotlin {
     androidTarget {
         @OptIn(ExperimentalKotlinGradlePluginApi::class)

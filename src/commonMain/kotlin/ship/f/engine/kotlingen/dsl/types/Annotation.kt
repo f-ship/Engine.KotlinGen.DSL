@@ -12,4 +12,5 @@ data class Annotation(
 ) : Container(), Child {
     override val add get() = this
     override val define get() = this.apply { children.add(Define()) }
+    override fun execute() = this
 }

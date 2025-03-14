@@ -16,4 +16,5 @@ data class AssignedVal<T : Any?>(
 ) : Value<T>(), Child {
     override val add get() = this
     override val define get() = this.apply { children.add(Define()) }
+    override fun execute() = this
 }

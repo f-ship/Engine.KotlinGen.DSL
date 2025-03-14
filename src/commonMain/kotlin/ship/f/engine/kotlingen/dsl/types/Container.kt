@@ -32,4 +32,5 @@ abstract class Container : Code() {
 
     abstract val add: Any
     abstract val define: Any
+    abstract fun execute(): Any
 }

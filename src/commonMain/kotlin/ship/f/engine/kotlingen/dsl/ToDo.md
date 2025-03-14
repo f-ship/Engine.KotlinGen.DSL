@@ -1,45 +1,19 @@
-Refactor effort
-
-1) Clean up the Writer file to include a proper example of each thing I am trying to demonstrate DONE
-2) Clean up the arguments for each of the types DONE
-3) Experiment with delegation to see if we can reuse methods CANCEL
-4) Find a better solution for dealing with replace children and addChildren DONE
-5) Look into differentiating between using a typed string as a type and a typed string as a value, maybe use v for the value DONE
-6) actually implement the difference between add and define
-7) Make vals addable even if they are not assigned DONE
-8) Break up the Kotlin File into definable things DONE
-9) Factor Bundle out by replacing things with T CANCEL (Don't think I can remove bundle)
-10) Improve KType to string/type CANCEL (Don't think I can reliably rely on reflection)
-11) Create a system for automatic imports using declared types POSTPONE
-12) Create a base lib that includes a lot of common imports POSTPONE
-
-----------------------------------------------------------------------------------------------------
-
-1) Break up the Kotlin File into definable things DONE
-2) Actually implement the difference between add and define DONE
-
-----------------------------------------------------------------------------------------------------
-Complete WriterCore for all currently defined methods 
-1) MONDAY Get intent working DONE
-2) TUESDAY Create Typed strategy for typed block and values a sealed class DONE
-3) WEDNESDAY Complete If IfElse Else, Create a better id naming system DONE
-        ID a) create a random id function, b) add to all classes as default, c) share id between code DONE
-4) THURSDAY Complete For DONE
-5) FRIDAY Complete While DONE
-6) SATURDAY Complete DoWhile DONE
-7) SUNDAY Complete Class block + definition
-        Definition 
-                Visibility
-                Sealed/Data
-        Block Methods POSTPONE TO after ALPHA-1
-
-----------------------------------------------------------------------------------------------------
+Work on Refactoring effort
+MONDAY 10 - SUNDAY 16
 1) Create when branch DONE
 2) Write when definition DONE
 3) Create TypedValue sealed class DONE
 4) Create TypedValue state ext DONE
+5) Add abstract method for addChild
+6) Convert remaining Class implementations into delegates
+7) Improve WriterCore implementation to use better string literals
+8) Remove RandomString
+9) Refactor Save to use execute
+10) Refactor toCode to automatically handle executing blocks
+11) Complete Class visibility, sealed class, data class
 ----------------------------------------------------------------------------------------------------
 Work on WriterCore
+MONDAY 17 - SUNDAY 23
 1) MONDAY 17 Write Instance definition
 2) TUESDAY 18 Write Object definition
 3) WEDNESDAY 19 Write Fun definition
@@ -47,34 +21,24 @@ Work on WriterCore
 5) FRIDAY 21 Write Lambda definition
 6) SATURDAY 22 Write List definition
 7) SUNDAY 23 Write Annotation definition
-
 ----------------------------------------------------------------------------------------------------
-
+Work on Engine migration to KSP
+MONDAY 24 - SUNDAY 30
 1) Attempt to make code for Screen, SubPubs and Engine using KSP
-
 ----------------------------------------------------------------------------------------------------
+Improve KotlinGen to handle more general cases
 ALPHA
-1) Experiment with Delegation
-        Implement all non inline methods using delegation
-        Upgrade bundle to remove the need for inlining
-        Use null type on If to eliminate the need for inlining
-
-2) Complete When Definition
-3) Refactor the Writer
-4) Include project builds for the project
-
-BETA
-More types
-1) Handle Overrides, Suspend
-2) Stricter Class and Fun definitions
-3) Typed lists for args, typeArgs and Calls
-
-V1
+1) Include project builds for the project
+2) Handle Overrides, Suspend
+3) Stricter Class and Fun definitions
+4) Typed lists for args, typeArgs and Calls
+----------------------------------------------------------------------------------------------------
 Create a system for automatic imports using declared types POSTPONE for V1
+BETA
 1) Use qualified name of types for imports (works for simple types without type args) => Tick
 2) Use KType for imports (Doesn't work at all) will need a second arg which will contain a list of imports to include
 3) Use qualified name of types for imports (does not work for type args)
 4) Use KType for imports (Doesn't work for type args)
 5) Use references from generated types to use on automatic imports (Doesn't work)
 6) Use references to validate whether other code should be shown should use Bundle to blend references and t<T> in args
-
+----------------------------------------------------------------------------------------------------

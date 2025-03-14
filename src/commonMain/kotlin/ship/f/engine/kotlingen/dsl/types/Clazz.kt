@@ -27,9 +27,7 @@ data class Clazz(
 
     override val add get() = this
     override val define get() = this.apply { children.add(Define()) }
-    fun execute(){
-        block.invoke(this)
-    }
+    override fun execute() = this.apply { block.invoke(this) }
     private fun addChild(child: Code) {
         children.add(child)
     }

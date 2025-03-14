@@ -229,3 +229,39 @@
 // named Open_Protected Var "exampleProtectedVar"(Int::class) assign t<Int>("55")
 // named Override_Var "examplePrivateVar"(Int::class) assign t<Int>("55")
 // named Abstract_Public_Var "examplePublicVar"(Int::class)
+
+Refactor effort
+1) Clean up the Writer file to include a proper example of each thing I am trying to demonstrate DONE
+2) Clean up the arguments for each of the types DONE
+3) Experiment with delegation to see if we can reuse methods CANCEL
+4) Find a better solution for dealing with replace children and addChildren DONE
+5) Look into differentiating between using a typed string as a type and a typed string as a value, maybe use v for the value DONE
+6) actually implement the difference between add and define DONE
+7) Make vals addable even if they are not assigned DONE
+8) Break up the Kotlin File into definable things DONE
+9) Factor Bundle out by replacing things with T CANCEL (Don't think I can remove bundle)
+10) Improve KType to string/type CANCEL (Don't think I can reliably rely on reflection)
+11) Create a system for automatic imports using declared types POSTPONE
+12) Create a base lib that includes a lot of common imports POSTPONE
+
+----------------------------------------------------------------------------------------------------
+
+1) Break up the Kotlin File into definable things DONE
+2) Actually implement the difference between add and define DONE
+
+----------------------------------------------------------------------------------------------------
+Complete WriterCore for all currently defined methods
+1) MONDAY Get intent working DONE
+2) TUESDAY Create Typed strategy for typed block and values a sealed class DONE
+3) WEDNESDAY Complete If IfElse Else, Create a better id naming system DONE
+   ID a) create a random id function, b) add to all classes as default, c) share id between code DONE
+4) THURSDAY Complete For DONE
+5) FRIDAY Complete While DONE
+6) SATURDAY Complete DoWhile DONE
+7) SUNDAY Complete Class block + definition
+   Definition
+   Visibility
+   Sealed/Data
+   Block Methods POSTPONE TO after ALPHA-1
+
+----------------------------------------------------------------------------------------------------

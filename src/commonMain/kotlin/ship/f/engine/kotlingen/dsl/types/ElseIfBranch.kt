@@ -15,7 +15,5 @@ data class ElseIfBranch<R>(
 ) : If() {
     override val add get() = this
     override val define get() = this.apply { children.add(Define()) }
-    fun execute() {
-        returnValue = block()
-    }
+    override fun execute() = this.apply { returnValue = block() }
 }

@@ -1,5 +1,0 @@
-ship.f.engine.kotlingen.dsl.test.DSL-androidTest-0 /Users/samueltaiwo/AndroidStudioProjects/Compose.Multiplatform.Project.Sample/Engine/KotlinGen/DSL/build/generated/res/resValues/androidTest/debug
-ship.f.engine.kotlingen.dsl.test.DSL-mergeDebugAndroidTestResources-1 /Users/samueltaiwo/AndroidStudioProjects/Compose.Multiplatform.Project.Sample/Engine/KotlinGen/DSL/build/intermediates/incremental/debugAndroidTest/mergeDebugAndroidTestResources/merged.dir
-ship.f.engine.kotlingen.dsl.test.DSL-mergeDebugAndroidTestResources-2 /Users/samueltaiwo/AndroidStudioProjects/Compose.Multiplatform.Project.Sample/Engine/KotlinGen/DSL/build/intermediates/incremental/debugAndroidTest/mergeDebugAndroidTestResources/stripped.dir
-ship.f.engine.kotlingen.dsl.test.DSL-debugAndroidTest-3 /Users/samueltaiwo/AndroidStudioProjects/Compose.Multiplatform.Project.Sample/Engine/KotlinGen/DSL/build/intermediates/merged_res/debugAndroidTest/mergeDebugAndroidTestResources
-ship.f.engine.kotlingen.dsl.test.DSL-debug-4 /Users/samueltaiwo/AndroidStudioProjects/Compose.Multiplatform.Project.Sample/Engine/KotlinGen/DSL/build/intermediates/packaged_res/debug/packageDebugResources

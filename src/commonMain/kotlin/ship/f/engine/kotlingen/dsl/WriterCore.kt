@@ -5,8 +5,8 @@ import ship.f.engine.kotlingen.dsl.types.Clazz
 import ship.f.engine.kotlingen.dsl.types.Code
 import ship.f.engine.kotlingen.dsl.types.DoWhile
 import ship.f.engine.kotlingen.dsl.types.ElseBranch
-import ship.f.engine.kotlingen.dsl.types.EntireFile
 import ship.f.engine.kotlingen.dsl.types.ElseIfBranch
+import ship.f.engine.kotlingen.dsl.types.EntireFile
 import ship.f.engine.kotlingen.dsl.types.For
 import ship.f.engine.kotlingen.dsl.types.IfBranch
 import ship.f.engine.kotlingen.dsl.types.Import
@@ -15,8 +15,8 @@ import ship.f.engine.kotlingen.dsl.types.Space
 import ship.f.engine.kotlingen.dsl.types.TypeAlias
 import ship.f.engine.kotlingen.dsl.types.TypedBlock
 import ship.f.engine.kotlingen.dsl.types.TypedValue
-import ship.f.engine.kotlingen.dsl.types.ValTypedValue
 import ship.f.engine.kotlingen.dsl.types.Val
+import ship.f.engine.kotlingen.dsl.types.ValTypedValue
 import ship.f.engine.kotlingen.dsl.types.Var
 import ship.f.engine.kotlingen.dsl.types.When
 import ship.f.engine.kotlingen.dsl.types.WhenBranch
@@ -73,11 +73,11 @@ class WriterCore {
 
             is TypedBlock<*> -> code.copy().apply {
                 execute()
-            }.let {
+            }.run {
                 """
-                |${indent()}${it.definition}(${it.args.toCode()}): ${it.returnValue?.toCode()} {
-                |${indent()}    ${it.children.map { child -> toCode(child) }.toMultiString()}
-                |${indent()}    return ${it.returnValue?.value.toCode()}
+                |${indent()}${definition}(${args.toCode()}): ${returnValue?.toCode()} {
+                |${indent()}    ${children.map { child -> toCode(child) }.toMultiString()}
+                |${indent()}    return ${returnValue?.value.toCode()}
                 |${indent()}}
                 """
             }
@@ -95,84 +95,84 @@ class WriterCore {
 
             is IfBranch<*> -> code.copy().apply {
                 execute()
-            }.let {
+            }.run {
                 """
-                |${indent()}if(${it.statement.value.toCode()}) {
-                |${indent()}${it.uniqueChildren.map { child -> toCode(child,4) }.toMultiString()}
-                |${indent()}    ${it.returnValue?.value?.toCode()}
+                |${indent()}if(${statement.value.toCode()}) {
+                |${indent()}${uniqueChildren.map { child -> toCode(child,4) }.toMultiString()}
+                |${indent()}    ${returnValue?.value?.toCode()}
                 |${indent()}}
                 """
             }
 
             is ElseIfBranch<*> -> code.copy().apply {
                 execute()
-            }.let {
+            }.run {
                 """
-                |${indent()}${toCode(it.previous)} else if(${it.statement.value.toCode()}) {
-                |${indent()}${it.uniqueChildren.map { child -> toCode(child,4) }.toMultiString()}
-                |${indent()}    ${it.returnValue?.value?.toCode()}
+                |${indent()}${toCode(previous)} else if(${statement.value.toCode()}) {
+                |${indent()}${uniqueChildren.map { child -> toCode(child,4) }.toMultiString()}
+                |${indent()}    ${returnValue?.value?.toCode()}
                 |${indent()}}
                 """
             }
 
             is ElseBranch<*> -> code.copy().apply {
                 execute()
-            }.let {
+            }.run {
                 """
-                |${indent()}${toCode(it.previous)} else {
-                |${indent()}${it.uniqueChildren.map { child -> toCode(child,4) }.toMultiString()}
-                |${indent(4)}${it.returnValue?.value?.toCode()}
+                |${indent()}${toCode(previous)} else {
+                |${indent()}${uniqueChildren.map { child -> toCode(child,4) }.toMultiString()}
+                |${indent(4)}${returnValue?.value?.toCode()}
                 |${indent()}}
                 """
             }
 
             is For -> code.copy().apply {
                 execute()
-            }.let {
+            }.run {
                 """
-                |${indent()}for(${it.statement}){
-                |${indent()}${it.uniqueChildren.map { child -> toCode(child,4) }.toMultiString()}
+                |${indent()}for(${statement}){
+                |${indent()}${uniqueChildren.map { child -> toCode(child,4) }.toMultiString()}
                 |${indent()}}
                 """
             }
 
             is While -> code.copy().apply {
                 execute()
-            }.let {
+            }.run {
                 """
-                |${indent()}while(${it.statement.value.toCode()}){
-                |${indent()}${it.uniqueChildren.map { child -> toCode(child,4) }.toMultiString()}
+                |${indent()}while(${statement.value.toCode()}){
+                |${indent()}${uniqueChildren.map { child -> toCode(child,4) }.toMultiString()}
                 |${indent()}}
                 """
             }
 
             is DoWhile -> code.copy().apply {
                 execute()
-            }.let {
+            }.run {
                 """
                 |${indent()}do {
-                |${indent()}${it.uniqueChildren.map { child -> toCode(child,4) }.toMultiString()}
-                |${indent()}} while (${it.statement.value.toCode()})
+                |${indent()}${uniqueChildren.map { child -> toCode(child,4) }.toMultiString()}
+                |${indent()}} while (${statement.value.toCode()})
                 """
             }
 
             is When<*,*> -> code.copy().apply {
                 execute()
-            }.let {
+            }.run {
                 """
-                |${indent()}when${it.arg?.value?.toCode()?.let { arg -> "($arg)" } ?: ""} {
-                |${indent()}${it.uniqueChildren.map { child -> toCode(child,4) }.toMultiString()}
+                |${indent()}when${arg?.value?.toCode()?.let { arg -> "($arg)" } ?: ""} {
+                |${indent()}${uniqueChildren.map { child -> toCode(child,4) }.toMultiString()}
                 |${indent()}}
                 """
             }
 
             is WhenBranch<*, *> -> code.copy().apply {
                 execute()
-            }.let {
+            }.run {
                 """
-                |${indent()}${it.name} -> {
-                |${indent()}${it.uniqueChildren.map { child -> toCode(child,4) }.toMultiString()}
-                |${indent(4)}${it.returnValue?.value?.toCode() ?: removeLine}
+                |${indent()}${name} -> {
+                |${indent()}${uniqueChildren.map { child -> toCode(child,4) }.toMultiString()}
+                |${indent(4)}${returnValue?.value?.toCode() ?: removeLine}
                 |${indent()}}
                 """
             }

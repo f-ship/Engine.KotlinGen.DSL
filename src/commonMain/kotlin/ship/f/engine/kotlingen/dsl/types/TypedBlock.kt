@@ -17,9 +17,7 @@ data class TypedBlock<T : Any?>(
 ) : Container(), Child {
     override val add get() = this
     override val define get() = this.apply { children.add(Define()) }
-    fun execute() {
-        returnValue = block.invoke(this)
-    }
+    override fun execute() = this.apply { returnValue = block.invoke(this) }
 
     infix fun TypedBlock<T>.assign(t: ValTypedValue<T>) = t.apply { returnValue = this }
 }

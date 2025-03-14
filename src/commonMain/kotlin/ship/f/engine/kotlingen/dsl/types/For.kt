@@ -14,7 +14,5 @@ data class For(
 ) : Container(), Child {
     override val add get() = this
     override val define get() = this.apply { children.add(Define()) }
-    fun execute() {
-        block()
-    }
+    override fun execute() = this.apply { block() }
 }

@@ -14,7 +14,5 @@ data class ElseBranch<R>(
 ) : Else() {
     override val add get() = this
     override val define get() = this.apply { children.add(Define()) }
-    fun execute() { // TODO How to get these if blocks to run here? Definitely just include the if's itself as we need the statement
-        returnValue = block()
-    }
+    override fun execute() = this.apply { returnValue = block() }
 }

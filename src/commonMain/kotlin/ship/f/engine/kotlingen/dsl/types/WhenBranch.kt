@@ -19,7 +19,5 @@ data class WhenBranch<T, R>(
     ValInterface by ValDelegate(children, addChild)  {
     override val add get() = this
     override val define get() = this.apply { children.add(Define()) }
-    fun execute(){
-        returnValue = block(this, arg)
-    }
+    override fun execute() = this.apply { returnValue = block(this, arg) }
 }

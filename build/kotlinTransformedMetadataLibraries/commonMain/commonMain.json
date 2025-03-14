@@ -1,7 +1,0 @@
-[
-  {
-    "moduleId": "module org.jetbrains.kotlin:kotlin-stdlib:2.0.21",
-    "file": "/Users/samueltaiwo/AndroidStudioProjects/Compose.Multiplatform.Project.Sample/Engine/KotlinGen/DSL/build/kotlinTransformedMetadataLibraries/commonMain/org.jetbrains.kotlin-kotlin-stdlib-2.0.21-commonMain-WPEnbA.klib",
-    "sourceSetName": "commonMain"
-  }
-]
